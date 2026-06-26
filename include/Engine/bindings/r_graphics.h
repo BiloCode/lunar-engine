@@ -3,10 +3,10 @@
 #include <Engine/resources/ruby_loader.h>
 #include <Engine/resources/graphics_loader.h>
 
-class r_graphics_cache
+class r_graphics
 {
 public:
-   r_graphics_cache(RubyLoader& ruby, GraphicsCache& graphics);
+   r_graphics(RubyLoader& ruby, GraphicsCache& graphics);
 
 private:
    RubyLoader& ruby;

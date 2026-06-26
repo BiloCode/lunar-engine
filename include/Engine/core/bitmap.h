@@ -6,8 +6,7 @@
 class Bitmap
 {
 public:
-   Font* font; // memory leak!!
-   Bitmap();
+   Bitmap() = default;
    Bitmap(unsigned int width, unsigned int height);
    unsigned int get_width() const;
    unsigned int get_height() const;
@@ -15,7 +14,7 @@ public:
    void clear();
    void display();
    void resize(unsigned int width, unsigned int height);
-   void draw_text(const float x, const float y, const std::string& text);
+   void draw_text(const float x, const float y, const std::string& text, const Font& font);
    void draw_texture(const float x, const float y, const sf::Texture& texture);
 
 private:

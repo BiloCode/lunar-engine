@@ -1,10 +1,8 @@
 #include <Engine/resources/fonts_loader.h>
 #include <Engine/utils/paths.h>
-#include <Engine/utils/strings.h>
 #include <iostream>
 
 namespace Paths = Project::Paths;
-namespace Strings = Project::Strings;
 
 FontsLoader::FontsLoader(const std::string& path) : fonts(load_fonts(path))
 {
@@ -44,7 +42,7 @@ FontsCache FontsLoader::load_fonts(const std::string& path)
       {
          if (entry.path().extension().string() == extension)
          {
-            auto key = Strings::to_snake_case(entry.path().stem());
+            auto key = entry.path().filename();
             auto value = entry.path();
             fonts.add(key, value);
             break;

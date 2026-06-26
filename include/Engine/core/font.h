@@ -5,10 +5,12 @@
 class Font
 {
 public:
-   unsigned int size = 16u;
    Font(const sf::Font& font);
+   Font(const sf::Font& font, unsigned int font_size);
    operator const sf::Font&() const;
+   const unsigned int getSize() const;
 
 private:
    sf::Font font;
+   unsigned int font_size;
 };

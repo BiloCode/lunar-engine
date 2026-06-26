@@ -1,10 +1,6 @@
 #include <Engine/core/bitmap.h>
 
-Bitmap::Bitmap() : font(nullptr)
-{
-}
-
-Bitmap::Bitmap(unsigned int width, unsigned int height) : width(std::max(width, 1u)), height(std::max(height, 1u)), font(nullptr)
+Bitmap::Bitmap(unsigned int width, unsigned int height) : width(std::max(width, 1u)), height(std::max(height, 1u))
 {
    sf_canvas = sf::RenderTexture({ this->width, this->height });
 }
@@ -44,15 +40,12 @@ void Bitmap::resize(unsigned int width, unsigned int height)
    }
 }
 
-void Bitmap::draw_text(const float x, const float y, const std::string& text)
+void Bitmap::draw_text(const float x, const float y, const std::string& text, const Font& font)
 {
-   if (!font) {
-      throw std::runtime_error("[Bitmap::draw_text]: font is null");
-   }
-   sf::Text sf_text(*font);
+   sf::Text sf_text(font);
    sf_text.setString(text);
    sf_text.setPosition({ x, y });
-   sf_text.setCharacterSize(font->size);
+   sf_text.setCharacterSize(font.getSize());
    sf_canvas.draw(sf_text);
 }
 

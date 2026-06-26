@@ -42,12 +42,12 @@ const mrb_data_type r_audio_type = {
    nullptr
 };
 
-const mrb_data_type r_fonts_cache_type = {
-   "FontsCache",
+const mrb_data_type r_fonts_type = {
+   "Fonts",
    nullptr
 };
 
-const mrb_data_type r_graphics_cache_type = {
-   "GraphicsCache",
+const mrb_data_type r_graphics_type = {
+   "Graphics",
    nullptr
 };

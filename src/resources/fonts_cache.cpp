@@ -19,7 +19,7 @@ const sf::Font& FontsCache::get(const std::string& key)
    auto path = paths.find(key);
 
    if (path == paths.end()) {
-      throw std::runtime_error("[Fonts]: Font not found: " + key);
+      throw std::runtime_error("[Fonts]: Missing font resource '" + key + "'");
    }
 
    sf::Font font;

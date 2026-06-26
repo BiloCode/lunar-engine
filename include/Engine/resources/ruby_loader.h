@@ -28,6 +28,10 @@ public:
    void bind_global_const(const std::string& name, mrb_value value);
    void bind_global_method(const std::string& name, mrb_func_t method, mrb_aspec aspec);
    void bind_global_variable(const std::string& name, mrb_value value);
+   template<typename T> void bind_property(RClass* ref, const std::string& name, T* value)
+   {
+      mrb_iv_set(mrb, mrb_obj_value(ref), mrb_intern_cstr(mrb, name.c_str()), mrb_cptr_value(mrb, value));
+   }
 
 private:
    mrb_state* mrb;
