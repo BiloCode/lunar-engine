@@ -1,0 +1,81 @@
+cmake_minimum_required(VERSION 3.28)
+project(LunarEngine LANGUAGES CXX)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+include(FetchContent)
+
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 3.1.0
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SYSTEM)
+FetchContent_MakeAvailable(SFML)
+
+add_executable(LunarEngine
+   src/main.cpp
+   src/bindings/r_types.cpp
+   src/bindings/r_font.cpp
+   src/bindings/r_audio.cpp
+   src/bindings/r_input.cpp
+   src/bindings/r_bitmap.cpp
+   src/bindings/r_sprite.cpp
+   src/bindings/r_fonts_cache.cpp
+   src/bindings/r_graphics_cache.cpp
+   src/core/font.cpp
+   src/core/color.cpp
+   src/core/sprite.cpp
+   src/core/bitmap.cpp
+   src/utils/files.cpp
+   src/utils/paths.cpp
+   src/utils/strings.cpp
+   src/resources/ruby_loader.cpp
+   src/resources/fonts_cache.cpp
+   src/resources/fonts_loader.cpp
+   src/resources/graphics_cache.cpp
+   src/resources/graphics_loader.cpp
+   src/resources/settings_loader.cpp
+)
+
+add_custom_command(
+   TARGET LunarEngine POST_BUILD
+
+   COMMAND ${CMAKE_COMMAND} -E make_directory
+      $<TARGET_FILE_DIR:LunarEngine>/fonts
+
+   COMMAND ${CMAKE_COMMAND} -E make_directory
+      $<TARGET_FILE_DIR:LunarEngine>/scripts
+
+   COMMAND ${CMAKE_COMMAND} -E make_directory
+      $<TARGET_FILE_DIR:LunarEngine>/graphics
+
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_SOURCE_DIR}/templates/fonts/Arial.ttf
+      $<TARGET_FILE_DIR:LunarEngine>/fonts/Arial.ttf
+
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_SOURCE_DIR}/templates/game.cfg
+      $<TARGET_FILE_DIR:LunarEngine>/game.cfg
+)
+
+target_compile_features(LunarEngine
+   PRIVATE
+      cxx_std_17
+)
+
+target_link_libraries(LunarEngine
+   PRIVATE
+      SFML::Graphics
+      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/build/host/lib/libmruby.a
+)
+
+target_include_directories(LunarEngine
+   PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/build/host/include
+)
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT LunarEngine)

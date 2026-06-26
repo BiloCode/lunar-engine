@@ -1,0 +1,7 @@
+build
+out
+libraries
+.cache
+.idea
+.vs
+.vscode
