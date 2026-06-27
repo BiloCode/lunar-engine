@@ -4,11 +4,13 @@
 #include <Engine/resources/graphics_loader.h>
 #include <Engine/bindings/r_font.h>
 #include <Engine/bindings/r_fonts.h>
+#include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_audio.h>
 #include <Engine/bindings/r_input.h>
 #include <Engine/bindings/r_bitmap.h>
 #include <Engine/bindings/r_sprite.h>
 #include <Engine/bindings/r_graphics.h>
+#include <Engine/core/render.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -31,6 +33,7 @@ int main()
       r_font { r_loader };
       r_fonts { r_loader, fonts };
       r_input { r_loader };
+      r_color { r_loader };
       r_audio { r_loader };
       r_bitmap { r_loader };
       r_sprite { r_loader };
@@ -58,6 +61,7 @@ int main()
          }
 
          window.clear();
+         Render::update(window);
          window.display();
       }
 

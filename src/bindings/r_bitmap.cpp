@@ -8,7 +8,7 @@ namespace
    {
       Bitmap* bitmap;
       mrb_int width, height;
-      int arg_count = mrb_get_argc(mrb);
+      mrb_int arg_count = mrb_get_argc(mrb);
 
       if (arg_count == 0) {
          bitmap = new Bitmap();
@@ -64,12 +64,25 @@ namespace
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       mrb_int x, y;
-      mrb_value value;
+      mrb_value v_font;
+      mrb_value v_color;
       const char* text;
-      mrb_get_args(mrb, "iiz", &x, &y, &text, &value);
-      auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, value, &r_font_type));
+      mrb_int args_c = mrb_get_args(mrb, "iizo|o", &x, &y, &text, &v_font, &v_color);
+
+      auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-      bitmap->draw_text(x, y, text, *font);
+
+      if (args_c == 4) {
+         bitmap->draw_text(x, y, text, *font);
+      }
+      else if (args_c == 5) {
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
+         bitmap->draw_text(x, y, text, *font, *color);
+      }
+      else {
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+      }
+
       return mrb_nil_value();
    }
 
@@ -88,6 +101,6 @@ r_bitmap::r_bitmap(RubyLoader& ruby) : ruby(ruby)
    this->ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
    this->ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
    this->ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
-   this->ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_REQ(4));
+   this->ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(4, 1));
    this->ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

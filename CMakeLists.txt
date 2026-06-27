@@ -19,6 +19,7 @@ add_executable(LunarEngine
    src/bindings/r_types.cpp
    src/bindings/r_font.cpp
    src/bindings/r_fonts.cpp
+   src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
    src/bindings/r_input.cpp
    src/bindings/r_bitmap.cpp
@@ -26,8 +27,9 @@ add_executable(LunarEngine
    src/bindings/r_graphics.cpp
    src/core/font.cpp
    src/core/color.cpp
-   src/core/sprite.cpp
    src/core/bitmap.cpp
+   src/core/sprite.cpp
+   src/core/render.cpp
    src/utils/files.cpp
    src/utils/paths.cpp
    src/utils/strings.cpp

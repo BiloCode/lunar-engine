@@ -6,9 +6,10 @@
 class Sprite
 {
 public:
-   Bitmap* bitmap; // memory leak!!
+   Bitmap* bitmap;
    float x;
    float y;
-   Sprite() = default;
-   void draw(sf::RenderTarget& render);
+   Sprite();
+   ~Sprite();
+   void draw(sf::RenderTarget& target);
 };

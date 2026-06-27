@@ -13,7 +13,7 @@ Font::operator const sf::Font&() const
    return font;
 }
 
-const unsigned int Font::getSize() const
+const unsigned int Font::get_size() const
 {
    return font_size;
 }

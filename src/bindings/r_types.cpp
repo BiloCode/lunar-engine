@@ -7,28 +7,36 @@
 const mrb_data_type r_font_type = {
    "Font",
    [](mrb_state*, void* ptr) {
-      delete static_cast<Font*>(ptr);
+      if (ptr) {
+         delete static_cast<Font*>(ptr);
+      }
    }
 };
 
 const mrb_data_type r_bitmap_type = {
    "Bitmap",
    [](mrb_state*, void* ptr) {
-      delete static_cast<Bitmap*>(ptr);
+      if (ptr) {
+         delete static_cast<Bitmap*>(ptr);
+      }
    }
 };
 
 const mrb_data_type r_color_type = {
    "Color",
    [](mrb_state*, void* ptr) {
-      delete static_cast<Color*>(ptr);
+      if (ptr) {
+         delete static_cast<Color*>(ptr);
+      }
    }
 };
 
 const mrb_data_type r_sprite_type = {
    "Sprite",
    [](mrb_state*, void* ptr) {
-      delete static_cast<Sprite*>(ptr);
+      if (ptr) {
+         delete static_cast<Sprite*>(ptr);
+      }
    }
 };
 

@@ -1,11 +1,22 @@
 #include <Engine/core/sprite.h>
+#include <Engine/core/render.h>
+#include <iostream>
 
-void Sprite::draw(sf::RenderTarget& render)
+Sprite::Sprite()
+{
+   Render::add(this);
+}
+
+Sprite::~Sprite()
+{
+   Render::remove(this);
+}
+
+void Sprite::draw(sf::RenderTarget& target)
 {
    if (bitmap) {
-      bitmap->display();
-      sf::Sprite sf_sprite(bitmap->get_texture());
-      sf_sprite.setPosition({ x, y });
-      render.draw(sf_sprite);
+      sf::Sprite sprite(bitmap->get_texture());
+      sprite.setPosition({ x, y });
+      target.draw(sprite);
    }
 }

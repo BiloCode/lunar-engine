@@ -2,7 +2,6 @@
 #include <Engine/bindings/r_types.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
-#include <iostream>
 
 namespace
 {
