@@ -2,7 +2,7 @@
 #include <Engine/utils/paths.h>
 #include <iostream>
 
-namespace Paths = Project::Paths;
+namespace Paths = Engine::Paths;
 
 GraphicsLoader::GraphicsLoader(const std::string& path) : graphics(load_graphics(path))
 {

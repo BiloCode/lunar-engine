@@ -29,7 +29,10 @@ add_executable(LunarEngine
    src/core/color.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
-   src/core/render.cpp
+   src/singletons/scene.cpp
+   src/singletons/canvas.cpp
+   src/singletons/project.cpp
+   src/singletons/runtime.cpp
    src/utils/files.cpp
    src/utils/paths.cpp
    src/utils/strings.cpp
@@ -38,7 +41,6 @@ add_executable(LunarEngine
    src/resources/fonts_loader.cpp
    src/resources/graphics_cache.cpp
    src/resources/graphics_loader.cpp
-   src/resources/settings_loader.cpp
 )
 
 add_custom_command(

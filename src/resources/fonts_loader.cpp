@@ -2,7 +2,7 @@
 #include <Engine/utils/paths.h>
 #include <iostream>
 
-namespace Paths = Project::Paths;
+namespace Paths = Engine::Paths;
 
 FontsLoader::FontsLoader(const std::string& path) : fonts(load_fonts(path))
 {

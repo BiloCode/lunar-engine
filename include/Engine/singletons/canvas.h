@@ -1,11 +1,11 @@
 #pragma once
 
-#include "sprite.h"
 #include <SFML/Graphics.hpp>
+#include <Engine/core/sprite.h>
 #include <vector>
 #include <algorithm>
 
-class Render
+class Canvas
 {
 public:
    static void add(Sprite* sprite);

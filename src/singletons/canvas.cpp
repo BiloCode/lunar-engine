@@ -1,13 +1,13 @@
-#include <Engine/core/render.h>
+#include <Engine/singletons/canvas.h>
 
-std::vector<Sprite*> Render::sprites = {};
+std::vector<Sprite*> Canvas::sprites = {};
 
-void Render::add(Sprite* sprite)
+void Canvas::add(Sprite* sprite)
 {
    sprites.push_back(sprite);
 }
 
-void Render::remove(Sprite* sprite)
+void Canvas::remove(Sprite* sprite)
 {
    auto it = std::find_if(sprites.begin(), sprites.end(), [sprite](Sprite* ptr) {
       return ptr == sprite;
@@ -19,7 +19,7 @@ void Render::remove(Sprite* sprite)
    }
 }
 
-void Render::update(sf::RenderTarget& target)
+void Canvas::update(sf::RenderTarget& target)
 {
    for (auto sprite : sprites)
    {

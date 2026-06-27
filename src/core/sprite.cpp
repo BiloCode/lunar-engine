@@ -1,15 +1,14 @@
 #include <Engine/core/sprite.h>
-#include <Engine/core/render.h>
-#include <iostream>
+#include <Engine/singletons/canvas.h>
 
 Sprite::Sprite()
 {
-   Render::add(this);
+   Canvas::add(this);
 }
 
 Sprite::~Sprite()
 {
-   Render::remove(this);
+   Canvas::remove(this);
 }
 
 void Sprite::draw(sf::RenderTarget& target)

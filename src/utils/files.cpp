@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 
-std::string Project::Files::str_trim(const std::string& value)
+std::string Engine::Files::str_trim(const std::string& value)
 {
    auto is_space = [](unsigned char c) {
       return std::isspace(c);
@@ -13,7 +13,7 @@ std::string Project::Files::str_trim(const std::string& value)
    return std::string(start, end);
 }
 
-int Project::Files::int_cast(const std::string& value, int def_value)
+int Engine::Files::int_cast(const std::string& value, int def_value)
 {
    try {
       size_t idx;
@@ -30,7 +30,7 @@ int Project::Files::int_cast(const std::string& value, int def_value)
    }
 }
 
-bool Project::Files::bool_cast(const std::string& value, bool def_value)
+bool Engine::Files::bool_cast(const std::string& value, bool def_value)
 {
    std::string v = value;
    std::transform(v.begin(), v.end(), v.begin(), ::tolower);

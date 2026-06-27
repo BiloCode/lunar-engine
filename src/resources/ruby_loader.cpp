@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace Paths = Project::Paths;
+namespace Paths = Engine::Paths;
 
 void RubyLoader::open()
 {

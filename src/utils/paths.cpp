@@ -12,7 +12,7 @@
 #include <mach-o/dyld.h>
 #endif
 
-std::filesystem::path Project::Paths::get_executable_path()
+std::filesystem::path Engine::Paths::get_executable_path()
 {
 #if defined(_WIN32)
    wchar_t path[MAX_PATH];
@@ -41,7 +41,7 @@ std::filesystem::path Project::Paths::get_executable_path()
 #endif
 }
 
-std::filesystem::path Project::Paths::get_executable_dir()
+std::filesystem::path Engine::Paths::get_executable_dir()
 {
    return get_executable_path().parent_path();
 }
