@@ -63,6 +63,13 @@ namespace
       sprite->y = (float)y;
       return mrb_nil_value();
    }
+
+   mrb_value sprite_dispose(mrb_state* mrb, mrb_value self)
+   {
+      auto sprite = static_cast<Sprite*>(mrb_data_get_ptr(mrb, self, &r_sprite_type));
+      sprite->dispose();
+      return mrb_nil_value();
+   }
 }
 
 r_sprite::r_sprite(RubyLoader& ruby) : ruby(ruby)
@@ -76,4 +83,5 @@ r_sprite::r_sprite(RubyLoader& ruby) : ruby(ruby)
    this->ruby.bind_instance_method(ref, "x=", sprite_x_set, MRB_ARGS_REQ(1));
    this->ruby.bind_instance_method(ref, "y", sprite_y, MRB_ARGS_NONE());
    this->ruby.bind_instance_method(ref, "y=", sprite_y_set, MRB_ARGS_REQ(1));
+   this->ruby.bind_instance_method(ref, "dispose", sprite_dispose, MRB_ARGS_NONE());
 }

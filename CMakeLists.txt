@@ -33,9 +33,10 @@ add_executable(LunarEngine
    src/singletons/canvas.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
-   src/utils/files.cpp
-   src/utils/paths.cpp
-   src/utils/strings.cpp
+   src/utils/path.cpp
+   src/utils/string.cpp
+   src/utils/boolean.cpp
+   src/utils/integer.cpp
    src/resources/ruby_loader.cpp
    src/resources/fonts_cache.cpp
    src/resources/fonts_loader.cpp

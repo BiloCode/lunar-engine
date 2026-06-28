@@ -1,8 +1,8 @@
 #include <Engine/resources/graphics_loader.h>
-#include <Engine/utils/paths.h>
+#include <Engine/utils/path.h>
 #include <iostream>
 
-namespace Paths = Engine::Paths;
+namespace Path = Engine::Path;
 
 GraphicsLoader::GraphicsLoader(const std::string& path) : graphics(load_graphics(path))
 {
@@ -15,7 +15,7 @@ const GraphicsCache& GraphicsLoader::get_cache()
 
 GraphicsCache GraphicsLoader::load_graphics(const std::string& path)
 {
-   std::filesystem::path basepath = Paths::get_executable_dir() / path;
+   std::filesystem::path basepath = Path::get_executable_dir() / path;
 
    if (!std::filesystem::exists(basepath))
    {

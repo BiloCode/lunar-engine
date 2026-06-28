@@ -1,9 +1,9 @@
 #include <Engine/resources/ruby_loader.h>
-#include <Engine/utils/paths.h>
+#include <Engine/utils/path.h>
 #include <fstream>
 #include <iostream>
 
-namespace Paths = Engine::Paths;
+namespace Path = Engine::Path;
 
 void RubyLoader::open()
 {
@@ -17,7 +17,7 @@ void RubyLoader::close()
 
 void RubyLoader::preload()
 {
-   auto order_path = Paths::get_executable_dir() / "scripts/load_order.txt";
+   auto order_path = Path::get_executable_dir() / "scripts/load_order.txt";
 
    if (!std::filesystem::exists(order_path)) {
       std::cerr << "[RubyLoader]: Failed to preload Ruby runtime" << std::endl;
@@ -34,7 +34,7 @@ void RubyLoader::preload()
          if (line.empty()) {
             continue;
          }
-         auto path = Paths::get_executable_dir() / ("scripts/" + line);
+         auto path = Path::get_executable_dir() / ("scripts/" + line);
          scripts_paths.push_back(path);
       }
 

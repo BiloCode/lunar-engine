@@ -12,4 +12,5 @@ public:
    Sprite();
    ~Sprite();
    void draw(sf::RenderTarget& target);
+   void dispose();
 };

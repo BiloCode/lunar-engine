@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-namespace Engine::Paths
+namespace Engine::Path
 {
    std::filesystem::path get_executable_dir();
    std::filesystem::path get_executable_path();

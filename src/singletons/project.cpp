@@ -1,18 +1,22 @@
 #include <Engine/singletons/project.h>
-#include <Engine/utils/files.h>
-#include <Engine/utils/paths.h>
+#include <Engine/utils/path.h>
+#include <Engine/utils/string.h>
+#include <Engine/utils/boolean.h>
+#include <Engine/utils/integer.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 
-namespace Files = Engine::Files;
-namespace Paths = Engine::Paths;
+namespace Path = Engine::Path;
+namespace String = Engine::String;
+namespace Boolean = Engine::Boolean;
+namespace Integer = Engine::Integer;
 
 std::unordered_map<std::string, std::string> Project::settings = {};
 
 void Project::load()
 {
-   auto basepath = Paths::get_executable_dir() / "game.cfg";
+   auto basepath = Path::get_executable_dir() / "game.cfg";
 
    if (!std::filesystem::exists(basepath))
    {
@@ -36,7 +40,7 @@ void Project::load()
          continue;
       }
 
-      line = Files::str_trim(line);
+      line = String::trim(line);
 
       if (auto fl = line.front(); fl == '#' )
       {
@@ -45,8 +49,8 @@ void Project::load()
 
       if (auto ps = line.find("="); ps != std::string::npos)
       {
-         std::string key = Files::str_trim(line.substr(0, ps));
-         std::string value = Files::str_trim(line.substr(ps + 1));
+         std::string key = String::trim(line.substr(0, ps));
+         std::string value = String::trim(line.substr(ps + 1));
          settings.emplace(key, value);
       }
    }
@@ -62,7 +66,7 @@ template<typename T> T Project::get_settings(const std::string&, T fallback)
 template<> int Project::get_settings(const std::string& name, int fallback)
 {
    if (auto it = settings.find(name); it != settings.end()) {
-      return Files::int_cast(it->second);
+      return Integer::int_cast(it->second);
    }
    return fallback;
 }
@@ -70,7 +74,7 @@ template<> int Project::get_settings(const std::string& name, int fallback)
 template<> unsigned int Project::get_settings(const std::string& name, unsigned int fallback)
 {
    if (auto it = settings.find(name); it != settings.end()) {
-      return Files::int_cast(it->second);
+      return Integer::int_cast(it->second);
    }
    return fallback;
 }
@@ -78,7 +82,7 @@ template<> unsigned int Project::get_settings(const std::string& name, unsigned 
 template<> bool Project::get_settings(const std::string& name, bool fallback)
 {
    if (auto it = settings.find(name); it != settings.end()) {
-      return Files::bool_cast(it->second);
+      return Boolean::bool_cast(it->second);
    }
    return fallback;
 }

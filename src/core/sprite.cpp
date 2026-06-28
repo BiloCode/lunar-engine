@@ -19,3 +19,8 @@ void Sprite::draw(sf::RenderTarget& target)
       target.draw(sprite);
    }
 }
+
+void Sprite::dispose()
+{
+   Canvas::remove(this);
+}
