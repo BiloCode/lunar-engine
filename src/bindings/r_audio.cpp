@@ -1,7 +1,7 @@
 #include <Engine/bindings/r_audio.h>
 
-r_audio::r_audio(RubyLoader& ruby) : ruby(ruby)
+void ruby::bind_audio(RubyLoader& ruby)
 {
-   auto ref = this->ruby.bind_class("Audio");
+   auto ref = ruby.bind_class("Audio");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
 }

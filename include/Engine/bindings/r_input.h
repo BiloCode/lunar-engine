@@ -2,11 +2,7 @@
 
 #include <Engine/resources/ruby_loader.h>
 
-class r_input
+namespace ruby
 {
-public:
-   r_input(RubyLoader& ruby);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_input(RubyLoader& ruby);
+}

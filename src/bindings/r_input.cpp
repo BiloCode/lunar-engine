@@ -1,7 +1,7 @@
 #include <Engine/bindings/r_input.h>
 
-r_input::r_input(RubyLoader& ruby) : ruby(ruby)
+void ruby::bind_input(RubyLoader& ruby)
 {
-   auto ref = this->ruby.bind_class("Input");
+   auto ref = ruby.bind_class("Input");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
 }

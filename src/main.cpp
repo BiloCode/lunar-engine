@@ -31,16 +31,16 @@ int main()
       r_loader.open();
       r_loader.preload();
 
-      r_font { r_loader };
-      r_fonts { r_loader, fonts };
-      r_input { r_loader };
-      r_color { r_loader };
-      r_audio { r_loader };
-      r_vector_int { r_loader };
-      r_vector_float { r_loader };
-      r_bitmap { r_loader };
-      r_sprite { r_loader };
-      r_graphics { r_loader, graphics };
+      ruby::bind_font(r_loader);
+      ruby::bind_input(r_loader);
+      ruby::bind_color(r_loader);
+      ruby::bind_audio(r_loader);
+      ruby::bind_bitmap(r_loader);
+      ruby::bind_sprite(r_loader);
+      ruby::bind_fonts(r_loader, fonts);
+      ruby::bind_graphics(r_loader, graphics);
+      ruby::bind_vector_int(r_loader);
+      ruby::bind_vector_float(r_loader);
 
       r_loader.initialize();
 

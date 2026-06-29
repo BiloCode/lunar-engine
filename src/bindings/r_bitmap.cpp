@@ -92,15 +92,15 @@ namespace
    }
 }
 
-r_bitmap::r_bitmap(RubyLoader& ruby) : ruby(ruby)
+void ruby::bind_bitmap(RubyLoader& ruby)
 {
-   auto ref = this->ruby.bind_class("Bitmap");
+   auto ref = ruby.bind_class("Bitmap");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   this->ruby.bind_instance_method(ref, "initialize", bitmap_initialize, MRB_ARGS_ARG(0, 2));
-   this->ruby.bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
-   this->ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(4, 1));
-   this->ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "initialize", bitmap_initialize, MRB_ARGS_ARG(0, 2));
+   ruby.bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
+   ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(4, 1));
+   ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

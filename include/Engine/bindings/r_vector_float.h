@@ -3,11 +3,7 @@
 #include <Engine/core/vector.h>
 #include <Engine/resources/ruby_loader.h>
 
-class r_vector_float
+namespace ruby
 {
-public:
-   r_vector_float(RubyLoader& ruby);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_vector_float(RubyLoader& ruby);
+}

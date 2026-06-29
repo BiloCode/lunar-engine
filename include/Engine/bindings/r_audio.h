@@ -2,11 +2,7 @@
 
 #include <Engine/resources/ruby_loader.h>
 
-class r_audio
+namespace ruby
 {
-public:
-   r_audio(RubyLoader& ruby);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_audio(RubyLoader& ruby);
+}

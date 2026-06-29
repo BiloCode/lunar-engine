@@ -2,11 +2,7 @@
 
 #include <Engine/resources/ruby_loader.h>
 
-class r_sprite
+namespace ruby
 {
-public:
-   r_sprite(RubyLoader& ruby);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_sprite(RubyLoader& ruby);
+}

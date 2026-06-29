@@ -3,11 +3,7 @@
 #include <Engine/resources/ruby_loader.h>
 #include <Engine/resources/graphics_loader.h>
 
-class r_graphics
+namespace ruby
 {
-public:
-   r_graphics(RubyLoader& ruby, GraphicsCache& graphics);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_graphics(RubyLoader& ruby, GraphicsCache& graphics);
+}

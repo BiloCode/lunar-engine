@@ -3,11 +3,7 @@
 #include <Engine/core/color.h>
 #include <Engine/resources/ruby_loader.h>
 
-class r_color
+namespace ruby
 {
-public:
-   r_color(RubyLoader& ruby);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_color(RubyLoader& ruby);
+}

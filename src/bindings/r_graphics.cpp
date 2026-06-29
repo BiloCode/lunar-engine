@@ -1,7 +1,7 @@
 #include <Engine/bindings/r_graphics.h>
 #include <Engine/bindings/r_types.h>
 
-r_graphics::r_graphics(RubyLoader& ruby, GraphicsCache& graphics) : ruby(ruby)
+void ruby::bind_graphics(RubyLoader& ruby, GraphicsCache& graphics)
 {
-   auto ref = this->ruby.bind_module("Graphics");
+   auto ref = ruby.bind_module("Graphics");
 }

@@ -89,15 +89,15 @@ namespace
    }
 }
 
-r_vector_int::r_vector_int(RubyLoader& ruby) : ruby(ruby)
+void ruby::bind_vector_int(RubyLoader& ruby)
 {
-   auto ref = this->ruby.bind_class("Vector2i");
+   auto ref = ruby.bind_class("Vector2i");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   this->ruby.bind_instance_method(ref, "initialize", vector_initialize, MRB_ARGS_ARG(0, 2));
-   this->ruby.bind_instance_method(ref, "x", vector_x, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "x=", vector_x_set, MRB_ARGS_REQ(1));
-   this->ruby.bind_instance_method(ref, "y", vector_y, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "y=", vector_y_set, MRB_ARGS_REQ(1));
-   this->ruby.bind_instance_method(ref, "to_s", vector_inspect, MRB_ARGS_NONE());
-   this->ruby.bind_instance_method(ref, "inspect", vector_inspect, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "initialize", vector_initialize, MRB_ARGS_ARG(0, 2));
+   ruby.bind_instance_method(ref, "x", vector_x, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "x=", vector_x_set, MRB_ARGS_REQ(1));
+   ruby.bind_instance_method(ref, "y", vector_y, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "y=", vector_y_set, MRB_ARGS_REQ(1));
+   ruby.bind_instance_method(ref, "to_s", vector_inspect, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "inspect", vector_inspect, MRB_ARGS_NONE());
 }

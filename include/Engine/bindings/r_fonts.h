@@ -4,11 +4,7 @@
 #include <Engine/resources/ruby_loader.h>
 #include <Engine/resources/fonts_cache.h>
 
-class r_fonts
+namespace ruby
 {
-public:
-   r_fonts(RubyLoader& ruby, FontsCache& fonts);
-
-private:
-   RubyLoader& ruby;
-};
+   void bind_fonts(RubyLoader& ruby, FontsCache& fonts);
+}

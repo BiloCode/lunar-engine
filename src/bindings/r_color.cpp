@@ -24,9 +24,9 @@ namespace
    }
 }
 
-r_color::r_color(RubyLoader& ruby) : ruby(ruby)
+void ruby::bind_color(RubyLoader& ruby)
 {
-   auto ref = this->ruby.bind_class("Color");
+   auto ref = ruby.bind_class("Color");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   this->ruby.bind_instance_method(ref, "initialize", color_initialize, MRB_ARGS_ARG(3, 1));
+   ruby.bind_instance_method(ref, "initialize", color_initialize, MRB_ARGS_ARG(3, 1));
 }

@@ -29,9 +29,9 @@ namespace
    }
 }
 
-r_fonts::r_fonts(RubyLoader& ruby, FontsCache& fonts) : ruby(ruby)
+void ruby::bind_fonts(RubyLoader& ruby, FontsCache& fonts)
 {
-   auto ref = this->ruby.bind_module("Fonts");
-   this->ruby.bind_property(ref, "@cache", &fonts);
-   this->ruby.bind_singleton_method(ref, "get", fonts_get, MRB_ARGS_ARG(1, 1));
+   auto ref = ruby.bind_module("Fonts");
+   ruby.bind_property(ref, "@cache", &fonts);
+   ruby.bind_singleton_method(ref, "get", fonts_get, MRB_ARGS_ARG(1, 1));
 }
