@@ -33,6 +33,7 @@ add_executable(LunarEngine
    src/core/color.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
+   src/singletons/debug.cpp
    src/singletons/scene.cpp
    src/singletons/canvas.cpp
    src/singletons/project.cpp

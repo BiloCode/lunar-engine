@@ -11,4 +11,6 @@ public:
 
 private:
    static sf::RenderWindow window;
+   static void on_input(const std::optional<sf::Event>& event);
+   static void on_resize(const std::optional<sf::Event>& event);
 };

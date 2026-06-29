@@ -63,21 +63,21 @@ namespace
 
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
+      const char* v_text;
       mrb_int x, y;
-      mrb_value v_font;
-      mrb_value v_color;
-      const char* text;
-      mrb_int args_c = mrb_get_args(mrb, "iizo|o", &x, &y, &text, &v_font, &v_color);
+      mrb_value v_font, v_color;
+
+      mrb_int args_c = mrb_get_args(mrb, "iizo|o", &x, &y, &v_text, &v_font, &v_color);
 
       auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
       if (args_c == 4) {
-         bitmap->draw_text(x, y, text, *font);
+         bitmap->draw_text(x, y, v_text, *font);
       }
       else if (args_c == 5) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, text, *font, *color);
+         bitmap->draw_text(x, y, v_text, *font, *color);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");

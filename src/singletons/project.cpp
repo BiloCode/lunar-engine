@@ -71,6 +71,14 @@ template<> int Project::get_settings(const std::string& name, int fallback)
    return fallback;
 }
 
+template<> float Project::get_settings(const std::string& name, float fallback)
+{
+   if (auto it = settings.find(name); it != settings.end()) {
+      return Integer::float_cast(it->second);
+   }
+   return fallback;
+}
+
 template<> unsigned int Project::get_settings(const std::string& name, unsigned int fallback)
 {
    if (auto it = settings.find(name); it != settings.end()) {
