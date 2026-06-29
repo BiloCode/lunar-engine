@@ -8,6 +8,8 @@
 #include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_audio.h>
 #include <Engine/bindings/r_input.h>
+#include <Engine/bindings/r_vector_int.h>
+#include <Engine/bindings/r_vector_float.h>
 #include <Engine/bindings/r_bitmap.h>
 #include <Engine/bindings/r_sprite.h>
 #include <Engine/bindings/r_graphics.h>
@@ -34,6 +36,8 @@ int main()
       r_input { r_loader };
       r_color { r_loader };
       r_audio { r_loader };
+      r_vector_int { r_loader };
+      r_vector_float { r_loader };
       r_bitmap { r_loader };
       r_sprite { r_loader };
       r_graphics { r_loader, graphics };

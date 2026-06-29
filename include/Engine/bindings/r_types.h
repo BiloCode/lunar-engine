@@ -12,3 +12,5 @@ extern const mrb_data_type r_audio_type;
 extern const mrb_data_type r_sprite_type;
 extern const mrb_data_type r_bitmap_type;
 extern const mrb_data_type r_graphics_type;
+extern const mrb_data_type r_vector2i_type;
+extern const mrb_data_type r_vector2f_type;

@@ -1,6 +1,7 @@
 #include <Engine/bindings/r_types.h>
 #include <Engine/core/font.h>
 #include <Engine/core/color.h>
+#include <Engine/core/vector.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
 
@@ -13,20 +14,38 @@ const mrb_data_type r_font_type = {
    }
 };
 
-const mrb_data_type r_bitmap_type = {
-   "Bitmap",
-   [](mrb_state*, void* ptr) {
-      if (ptr) {
-         delete static_cast<Bitmap*>(ptr);
-      }
-   }
-};
-
 const mrb_data_type r_color_type = {
    "Color",
    [](mrb_state*, void* ptr) {
       if (ptr) {
          delete static_cast<Color*>(ptr);
+      }
+   }
+};
+
+const mrb_data_type r_vector2i_type = {
+   "Vector2i",
+   [](mrb_state*, void* ptr) {
+      if (ptr) {
+         delete static_cast<Vector<int>*>(ptr);
+      }
+   }
+};
+
+const mrb_data_type r_vector2f_type = {
+   "Vector2f",
+   [](mrb_state*, void* ptr) {
+      if (ptr) {
+         delete static_cast<Vector<float>*>(ptr);
+      }
+   }
+};
+
+const mrb_data_type r_bitmap_type = {
+   "Bitmap",
+   [](mrb_state*, void* ptr) {
+      if (ptr) {
+         delete static_cast<Bitmap*>(ptr);
       }
    }
 };

@@ -6,22 +6,22 @@ namespace
 {
    mrb_value bitmap_initialize(mrb_state* mrb, mrb_value self)
    {
-      Bitmap* bitmap;
-      mrb_int width, height;
       mrb_int arg_count = mrb_get_argc(mrb);
 
       if (arg_count == 0) {
-         bitmap = new Bitmap();
+         auto bitmap = new Bitmap();
+         mrb_data_init(self, bitmap, &r_bitmap_type);
       }
       else if (arg_count == 2) {
+         mrb_int width, height;
          mrb_get_args(mrb, "ii", &width, &height);
-         bitmap = new Bitmap(width, height);
+         auto bitmap = new Bitmap(width, height);
+         mrb_data_init(self, bitmap, &r_bitmap_type);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
       }
 
-      mrb_data_init(self, bitmap, &r_bitmap_type);
       return self;
    }
 

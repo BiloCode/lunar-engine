@@ -1,5 +1,6 @@
 #include <Engine/utils/string.h>
 #include <algorithm>
+#include <sstream>
 #include <cctype>
 
 std::string Engine::String::trim(const std::string& value)
@@ -19,4 +20,21 @@ std::string Engine::String::snake_case(std::string s)
       [](unsigned char c) { return std::tolower(c); });
    std::replace(s.begin(), s.end(), ' ', '_');
    return s;
+}
+
+std::string Engine::String::format_object(std::initializer_list<std::pair<std::string, std::string>> fields)
+{
+   std::ostringstream ss;
+   ss << "{ ";
+   bool first = true;
+   for (const auto& [key, value] : fields)
+   {
+      if (!first) {
+         ss << ", ";
+      }
+      ss << key << ": " << value;
+      first = false;
+   }
+   ss << " }";
+   return ss.str();
 }

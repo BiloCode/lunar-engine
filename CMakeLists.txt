@@ -3,6 +3,8 @@ project(LunarEngine LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
 
@@ -22,6 +24,8 @@ add_executable(LunarEngine
    src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
    src/bindings/r_input.cpp
+   src/bindings/r_vector_int.cpp
+   src/bindings/r_vector_float.cpp
    src/bindings/r_bitmap.cpp
    src/bindings/r_sprite.cpp
    src/bindings/r_graphics.cpp
@@ -63,11 +67,6 @@ add_custom_command(
    COMMAND ${CMAKE_COMMAND} -E copy_if_different
       ${CMAKE_SOURCE_DIR}/templates/game.cfg
       $<TARGET_FILE_DIR:LunarEngine>/game.cfg
-)
-
-target_compile_features(LunarEngine
-   PRIVATE
-      cxx_std_17
 )
 
 target_link_libraries(LunarEngine
