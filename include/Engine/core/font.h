@@ -10,7 +10,7 @@ public:
    Font(const sf::Font& font, unsigned int font_size);
    operator const sf::Font&() const;
    const unsigned int get_size() const;
-   const Vector<float> get_text_size(const std::string text) const;
+   const Vector<float> get_text_size(const std::string& text) const;
    const Vector<float> get_character_size(char c) const;
 
 private:

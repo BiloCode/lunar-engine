@@ -27,26 +27,27 @@ namespace
 
    mrb_value bitmap_width(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(
-         mrb_data_get_ptr(mrb, self, &r_bitmap_type)
-      );
+      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       return mrb_fixnum_value(bitmap->get_width());
    }
 
    mrb_value bitmap_height(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(
-         mrb_data_get_ptr(mrb, self, &r_bitmap_type)
-      );
+      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       return mrb_fixnum_value(bitmap->get_height());
    }
 
    mrb_value bitmap_clear(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(
-         mrb_data_get_ptr(mrb, self, &r_bitmap_type)
-      );
+      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->clear();
+      return mrb_nil_value();
+   }
+
+   mrb_value bitmap_debug(mrb_state* mrb, mrb_value self)
+   {
+      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      bitmap->debug();
       return mrb_nil_value();
    }
 
@@ -54,9 +55,7 @@ namespace
    {
       mrb_int width, height;
       mrb_get_args(mrb, "ii", &width, &height);
-      auto bitmap = static_cast<Bitmap*>(
-         mrb_data_get_ptr(mrb, self, &r_bitmap_type)
-      );
+      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->resize(width, height);
       return mrb_nil_value();
    }
@@ -64,20 +63,24 @@ namespace
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       const char* v_text;
-      mrb_int x, y;
+      mrb_int align;
+      mrb_float x, y, width, height;
       mrb_value v_font, v_color;
 
-      mrb_int args_c = mrb_get_args(mrb, "iizo|o", &x, &y, &v_text, &v_font, &v_color);
+      mrb_int args_c = mrb_get_args(mrb, "ffffzo|io", &x, &y, &width, &height, &v_text, &v_font, &align, &v_color);
 
       auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
-      if (args_c == 4) {
-         bitmap->draw_text(x, y, v_text, *font);
+      if (args_c == 6) {
+         bitmap->draw_text(x, y, width, height, v_text, *font);
       }
-      else if (args_c == 5) {
+      else if (args_c == 7) {
+         bitmap->draw_text(x, y, width, height, v_text, *font, align);
+      }
+      else if (args_c == 8) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, v_text, *font, *color);
+         bitmap->draw_text(x, y, width, height, v_text, *font, align, *color);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
@@ -101,6 +104,7 @@ void ruby::bind_bitmap(RubyLoader& ruby)
    ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
-   ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(4, 1));
+   ruby.bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
    ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

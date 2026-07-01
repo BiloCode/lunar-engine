@@ -18,21 +18,24 @@ const unsigned int Font::get_size() const
    return sf_font_size;
 }
 
-const Vector<float> Font::get_text_size(const std::string text) const
+const Vector<float> Font::get_text_size(const std::string& text) const
 {
-   float x, y;
+   auto sf_text = sf::Text(sf_font, sf::String::fromUtf8(text.begin(), text.end()), get_size());
+   auto sf_text_bounds = sf_text.getLocalBounds();
 
-   for (char c : text) {
-      auto c_size = get_character_size(c);
-      x += c_size.get_x();
-      y = std::max(c_size.get_y(), y);
-   }
-
-   return Vector<float>(x, y);
+   return {
+      sf_text_bounds.size.x,
+      sf_text_bounds.size.y
+   };
 }
 
 const Vector<float> Font::get_character_size(char c) const
 {
-   auto glyph = sf_font.getGlyph(c, sf_font_size, false);
-   return Vector<float>(glyph.advance, glyph.bounds.size.y);
+   auto width = sf_font.getGlyph(c, sf_font_size, false).advance;
+   auto height = sf_font.getLineSpacing(sf_font_size);
+
+   return {
+      width,
+      height
+   };
 }
