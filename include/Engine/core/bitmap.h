@@ -1,14 +1,16 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <Engine/interfaces/disposable.h>
 #include "font.h"
 #include "color.h"
 
-class Bitmap
+class Bitmap : public Disposable
 {
 public:
    Bitmap() = default;
    Bitmap(unsigned int width, unsigned int height);
+   ~Bitmap();
    unsigned int get_width() const;
    unsigned int get_height() const;
    const sf::Texture& get_texture();
@@ -19,6 +21,9 @@ public:
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align);
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align, const Color& color);
    void draw_texture(const float x, const float y, const sf::Texture& texture);
+
+protected:
+   void on_dispose() override;
 
 private:
    bool sf_dirty;

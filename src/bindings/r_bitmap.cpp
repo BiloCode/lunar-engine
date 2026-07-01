@@ -9,13 +9,13 @@ namespace
       mrb_int arg_count = mrb_get_argc(mrb);
 
       if (arg_count == 0) {
-         auto bitmap = new Bitmap();
+         auto* bitmap = new Bitmap();
          mrb_data_init(self, bitmap, &r_bitmap_type);
       }
       else if (arg_count == 2) {
          mrb_int width, height;
          mrb_get_args(mrb, "ii", &width, &height);
-         auto bitmap = new Bitmap(width, height);
+         auto* bitmap = new Bitmap(width, height);
          mrb_data_init(self, bitmap, &r_bitmap_type);
       }
       else {
@@ -27,26 +27,26 @@ namespace
 
    mrb_value bitmap_width(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       return mrb_fixnum_value(bitmap->get_width());
    }
 
    mrb_value bitmap_height(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       return mrb_fixnum_value(bitmap->get_height());
    }
 
    mrb_value bitmap_clear(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->clear();
       return mrb_nil_value();
    }
 
    mrb_value bitmap_debug(mrb_state* mrb, mrb_value self)
    {
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->debug();
       return mrb_nil_value();
    }
@@ -55,8 +55,15 @@ namespace
    {
       mrb_int width, height;
       mrb_get_args(mrb, "ii", &width, &height);
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->resize(width, height);
+      return mrb_nil_value();
+   }
+
+   mrb_value bitmap_dispose(mrb_state* mrb, mrb_value self)
+   {
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      bitmap->dispose();
       return mrb_nil_value();
    }
 
@@ -69,8 +76,8 @@ namespace
 
       mrb_int args_c = mrb_get_args(mrb, "ffffzo|io", &x, &y, &width, &height, &v_text, &v_font, &align, &v_color);
 
-      auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
-      auto bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
       if (args_c == 6) {
          bitmap->draw_text(x, y, width, height, v_text, *font);
@@ -103,8 +110,9 @@ void ruby::bind_bitmap(RubyLoader& ruby)
    ruby.bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
    ruby.bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
+   ruby.bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
    ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

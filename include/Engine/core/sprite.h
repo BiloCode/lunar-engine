@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <Engine/interfaces/disposable.h>
 #include "bitmap.h"
 
-class Sprite
+class Sprite : public Disposable
 {
 public:
    Bitmap* bitmap;
@@ -12,5 +13,7 @@ public:
    Sprite();
    ~Sprite();
    void draw(sf::RenderTarget& target);
-   void dispose();
+
+protected:
+   void on_dispose() override;
 };

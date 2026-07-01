@@ -5,6 +5,11 @@ Bitmap::Bitmap(unsigned int width, unsigned int height) : width(std::max(width, 
    sf_canvas = sf::RenderTexture({ this->width, this->height });
 }
 
+Bitmap::~Bitmap()
+{
+   dispose();
+}
+
 unsigned int Bitmap::get_width() const
 {
    return width;
@@ -26,12 +31,14 @@ const sf::Texture& Bitmap::get_texture()
 
 void Bitmap::clear()
 {
+   if (is_invalid()) return;
    sf_canvas.clear(sf::Color::Transparent);
    sf_dirty = true;
 }
 
 void Bitmap::debug()
 {
+   if (is_invalid()) return;
    auto sf_bounds = sf::RectangleShape();
    sf_bounds.setSize({ static_cast<float>(width), static_cast<float>(height) });
    sf_bounds.setPosition({ 0.f, 0.f });
@@ -44,6 +51,7 @@ void Bitmap::debug()
 
 void Bitmap::resize(unsigned int width, unsigned int height)
 {
+   if (is_invalid()) return;
    this->width = std::max(width, 1u);
    this->height = std::max(height, 1u);
    if (!this->sf_canvas.resize({ this->width, this->height }))
@@ -55,16 +63,20 @@ void Bitmap::resize(unsigned int width, unsigned int height)
 
 void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font)
 {
+   if (is_invalid()) return;
    draw_text(x, y, width, height, text, font, 0, Color(sf::Color::White));
 }
 
 void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align)
 {
+   if (is_invalid()) return;
    draw_text(x, y, width, height, text, font, align, Color(sf::Color::White));
 }
 
 void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align, const Color& color)
 {
+   if (is_invalid()) return;
+
    auto sf_text = sf::Text(font, sf::String::fromUtf8(text.begin(), text.end()), font.get_size());
    auto sf_text_bounds = sf_text.getLocalBounds();
 
@@ -100,5 +112,11 @@ void Bitmap::draw_text(float x, float y, float width, float height, const std::s
 
 void Bitmap::draw_texture(const float x, const float y, const sf::Texture& texture)
 {
+   if (is_invalid()) return;
    sf_dirty = true;
+}
+
+void Bitmap::on_dispose()
+{
+   sf_canvas = sf::RenderTexture();
 }

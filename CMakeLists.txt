@@ -38,6 +38,7 @@ add_executable(LunarEngine
    src/singletons/canvas.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
+   src/interfaces/disposable.cpp
    src/utils/path.cpp
    src/utils/string.cpp
    src/utils/boolean.cpp
