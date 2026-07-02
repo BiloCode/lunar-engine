@@ -1,9 +1,9 @@
 #include <Engine/core/sprite.h>
-#include <Engine/singletons/canvas.h>
+#include <Engine/singletons/renderer.h>
 
 Sprite::Sprite()
 {
-   Canvas::add(this);
+   Renderer::attach(this);
 }
 
 Sprite::~Sprite()
@@ -14,7 +14,7 @@ Sprite::~Sprite()
 void Sprite::draw(sf::RenderTarget& target)
 {
    if (bitmap && bitmap->is_valid()) {
-      sf::Sprite sprite(bitmap->get_texture());
+      auto sprite = sf::Sprite(bitmap->get_texture());
       sprite.setPosition({ x, y });
       target.draw(sprite);
    }

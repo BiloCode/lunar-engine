@@ -10,7 +10,7 @@ class Bitmap : public Disposable
 public:
    Bitmap() = default;
    Bitmap(unsigned int width, unsigned int height);
-   ~Bitmap();
+   ~Bitmap() override;
    unsigned int get_width() const;
    unsigned int get_height() const;
    const sf::Texture& get_texture();

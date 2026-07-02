@@ -67,6 +67,12 @@ namespace
       return mrb_nil_value();
    }
 
+   mrb_value bitmap_disposed(mrb_state* mrb, mrb_value self)
+   {
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      return mrb_bool_value(bitmap->is_invalid());
+   }
+
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       const char* v_text;
@@ -113,6 +119,7 @@ void ruby::bind_bitmap(RubyLoader& ruby)
    ruby.bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
    ruby.bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
+   ruby.bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
    ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
    ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

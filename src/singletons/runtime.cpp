@@ -1,8 +1,8 @@
 #include <Engine/singletons/runtime.h>
 #include <Engine/singletons/debug.h>
 #include <Engine/singletons/scene.h>
-#include <Engine/singletons/canvas.h>
 #include <Engine/singletons/project.h>
+#include <Engine/singletons/renderer.h>
 #include <string>
 
 sf::RenderWindow Runtime::window = sf::RenderWindow();
@@ -45,7 +45,7 @@ void Runtime::update()
 
    window.clear();
    Scene::update(window);
-   Canvas::update(window);
+   Renderer::update(window);
    window.display();
 }
 

@@ -1,18 +1,15 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <Engine/interfaces/disposable.h>
+#include <Engine/interfaces/renderable.h>
 #include "bitmap.h"
 
-class Sprite : public Disposable
+class Sprite : public Renderable
 {
 public:
-   Bitmap* bitmap;
-   float x;
-   float y;
+   Bitmap* bitmap = nullptr;
    Sprite();
-   ~Sprite();
-   void draw(sf::RenderTarget& target);
+   ~Sprite() override;
+   void draw(sf::RenderTarget& target) override;
 
 protected:
    void on_dispose() override;

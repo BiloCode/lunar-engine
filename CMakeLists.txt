@@ -35,10 +35,11 @@ add_executable(LunarEngine
    src/core/sprite.cpp
    src/singletons/debug.cpp
    src/singletons/scene.cpp
-   src/singletons/canvas.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
+   src/singletons/renderer.cpp
    src/interfaces/disposable.cpp
+   src/interfaces/renderable.cpp
    src/utils/path.cpp
    src/utils/string.cpp
    src/utils/boolean.cpp
