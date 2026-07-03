@@ -64,16 +64,16 @@ void Bitmap::resize(unsigned int width, unsigned int height)
 void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font)
 {
    if (is_invalid()) return;
-   draw_text(x, y, width, height, text, font, 0, Color(sf::Color::White));
+   draw_text(x, y, width, height, text, font, Color(sf::Color::Black), 0);
 }
 
-void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align)
+void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color)
 {
    if (is_invalid()) return;
-   draw_text(x, y, width, height, text, font, align, Color(sf::Color::White));
+   draw_text(x, y, width, height, text, font, color, 0);
 }
 
-void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align, const Color& color)
+void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align)
 {
    if (is_invalid()) return;
 

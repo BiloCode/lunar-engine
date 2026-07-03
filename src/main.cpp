@@ -1,6 +1,6 @@
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/runtime.h>
-#include <Engine/resources/ruby_loader.h>
+#include <Engine/singletons/interpreter.h>
 #include <Engine/resources/fonts_loader.h>
 #include <Engine/resources/graphics_loader.h>
 #include <Engine/bindings/r_font.h>
@@ -8,6 +8,7 @@
 #include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_audio.h>
 #include <Engine/bindings/r_input.h>
+#include <Engine/bindings/r_kernel.h>
 #include <Engine/bindings/r_vector_int.h>
 #include <Engine/bindings/r_vector_float.h>
 #include <Engine/bindings/r_bitmap.h>
@@ -20,36 +21,34 @@ int main()
    try {
       Project::load();
       Runtime::load();
+      Interpreter::load();
 
-      RubyLoader r_loader;
       FontsLoader f_loader("fonts");
       GraphicsLoader g_loader("graphics");
 
       FontsCache fonts = f_loader.get_cache();
       GraphicsCache graphics = g_loader.get_cache();
 
-      r_loader.open();
-      r_loader.preload();
+      ruby::bind_font();
+      ruby::bind_input();
+      ruby::bind_color();
+      ruby::bind_audio();
+      ruby::bind_bitmap();
+      ruby::bind_sprite();
+      ruby::bind_kernel();
+      ruby::bind_fonts(fonts);
+      ruby::bind_graphics(graphics);
+      ruby::bind_vector_int();
+      ruby::bind_vector_float();
 
-      ruby::bind_font(r_loader);
-      ruby::bind_input(r_loader);
-      ruby::bind_color(r_loader);
-      ruby::bind_audio(r_loader);
-      ruby::bind_bitmap(r_loader);
-      ruby::bind_sprite(r_loader);
-      ruby::bind_fonts(r_loader, fonts);
-      ruby::bind_graphics(r_loader, graphics);
-      ruby::bind_vector_int(r_loader);
-      ruby::bind_vector_float(r_loader);
-
-      r_loader.initialize();
+      Interpreter::start();
 
       while(Runtime::running())
       {
          Runtime::update();
       }
 
-      r_loader.close();
+      Interpreter::finish();
    }
    catch(const std::exception& e) {
       std::cerr << e.what() << std::endl;

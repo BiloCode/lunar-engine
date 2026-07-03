@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Engine/resources/ruby_loader.h>
-#include <Engine/resources/graphics_loader.h>
+#include <Engine/resources/graphics_cache.h>
 
 namespace ruby
 {
-   void bind_graphics(RubyLoader& ruby, GraphicsCache& graphics);
+   void bind_graphics(GraphicsCache& graphics);
 }

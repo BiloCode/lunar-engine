@@ -1,6 +1,7 @@
 #include <Engine/bindings/r_bitmap.h>
-#include <Engine/bindings/r_types.h>
 #include <Engine/bindings/r_font.h>
+#include <Engine/bindings/r_types.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace
 {
@@ -80,7 +81,7 @@ namespace
       mrb_float x, y, width, height;
       mrb_value v_font, v_color;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffffzo|io", &x, &y, &width, &height, &v_text, &v_font, &align, &v_color);
+      mrb_int args_c = mrb_get_args(mrb, "ffffzo|oi", &x, &y, &width, &height, &v_text, &v_font, &v_color, &align);
 
       auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
@@ -89,11 +90,12 @@ namespace
          bitmap->draw_text(x, y, width, height, v_text, *font);
       }
       else if (args_c == 7) {
-         bitmap->draw_text(x, y, width, height, v_text, *font, align);
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
+         bitmap->draw_text(x, y, width, height, v_text, *font, *color);
       }
       else if (args_c == 8) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, width, height, v_text, *font, align, *color);
+         bitmap->draw_text(x, y, width, height, v_text, *font, *color, align);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
@@ -108,18 +110,18 @@ namespace
    }
 }
 
-void ruby::bind_bitmap(RubyLoader& ruby)
+void ruby::bind_bitmap()
 {
-   auto ref = ruby.bind_class("Bitmap");
+   auto* ref = Interpreter::bind_class("Bitmap");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   ruby.bind_instance_method(ref, "initialize", bitmap_initialize, MRB_ARGS_ARG(0, 2));
-   ruby.bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
-   ruby.bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
-   ruby.bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "initialize", bitmap_initialize, MRB_ARGS_ARG(0, 2));
+   Interpreter::bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
+   Interpreter::bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
+   Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
 }

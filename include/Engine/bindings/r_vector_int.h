@@ -1,9 +1,8 @@
 #pragma once
 
 #include <Engine/core/vector.h>
-#include <Engine/resources/ruby_loader.h>
 
 namespace ruby
 {
-   void bind_vector_int(RubyLoader& ruby);
+   void bind_vector_int();
 }

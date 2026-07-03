@@ -18,8 +18,8 @@ public:
    void debug();
    void resize(unsigned int width, unsigned int height);
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font);
-   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align);
-   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, int align, const Color& color);
+   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color);
+   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align);
    void draw_texture(const float x, const float y, const sf::Texture& texture);
 
 protected:

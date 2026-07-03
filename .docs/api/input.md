@@ -1,5 +1,1 @@
 # Input
-
-```ruby
-Input
-```

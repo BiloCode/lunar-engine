@@ -9,3 +9,4 @@
 * [Audio](api/audio.md)
 * [Graphics](api/graphics.md)
 * [Input](api/input.md)
+* [Kernel](api/kernel.md)

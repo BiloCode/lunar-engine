@@ -79,7 +79,7 @@ Returns `true` if the bitmap has been disposed.
 ### draw_text
 
 ```ruby
-bitmap.draw_text(x, y, w, h, text, font[, align[, color]])
+bitmap.draw_text(x, y, w, h, text, font[, color[, align]])
 ```
 
 Renders text on the bitmap within the specified area.
@@ -90,8 +90,8 @@ Renders text on the bitmap within the specified area.
 - `height` — `Float` — text area height
 - `text` — `String`
 - `font` — `Font`
-- `align` — `Integer` (optional) — text alignment
 - `color` — `Color` (optional) — text color
+- `align` — `Integer` (optional) — text alignment
 
 ### draw_texture
 

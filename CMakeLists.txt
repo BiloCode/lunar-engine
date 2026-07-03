@@ -24,6 +24,7 @@ add_executable(LunarEngine
    src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
    src/bindings/r_input.cpp
+   src/bindings/r_kernel.cpp
    src/bindings/r_vector_int.cpp
    src/bindings/r_vector_float.cpp
    src/bindings/r_bitmap.cpp
@@ -37,6 +38,7 @@ add_executable(LunarEngine
    src/singletons/scene.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
+   src/singletons/interpreter.cpp
    src/singletons/renderer.cpp
    src/interfaces/disposable.cpp
    src/interfaces/renderable.cpp
@@ -44,7 +46,6 @@ add_executable(LunarEngine
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
-   src/resources/ruby_loader.cpp
    src/resources/fonts_cache.cpp
    src/resources/fonts_loader.cpp
    src/resources/graphics_cache.cpp

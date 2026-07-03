@@ -2,6 +2,7 @@
 #include <Engine/bindings/r_types.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace
 {
@@ -108,21 +109,21 @@ namespace
    }
 }
 
-void ruby::bind_sprite(RubyLoader& ruby)
+void ruby::bind_sprite()
 {
-   auto ref = ruby.bind_class("Sprite");
+   auto ref = Interpreter::bind_class("Sprite");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   ruby.bind_instance_method(ref, "initialize", sprite_initialize, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "bitmap", sprite_bitmap, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "bitmap=", sprite_bitmap_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "x", sprite_x, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "x=", sprite_x_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "y", sprite_y, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "y=", sprite_y_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "z", sprite_z, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "z=", sprite_z_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "visible", sprite_visible, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "visible=", sprite_visible_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "dispose", sprite_dispose, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "disposed?", sprite_disposed, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "initialize", sprite_initialize, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "bitmap", sprite_bitmap, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "bitmap=", sprite_bitmap_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "x", sprite_x, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "x=", sprite_x_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "y", sprite_y, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "y=", sprite_y_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "z", sprite_z, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "z=", sprite_z_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "visible", sprite_visible, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "visible=", sprite_visible_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "dispose", sprite_dispose, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "disposed?", sprite_disposed, MRB_ARGS_NONE());
 }

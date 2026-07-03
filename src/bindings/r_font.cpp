@@ -1,5 +1,6 @@
 #include <Engine/bindings/r_font.h>
 #include <Engine/bindings/r_types.h>
+#include <Engine/singletons/interpreter.h>
 #include <cstring>
 #include <iostream>
 
@@ -39,11 +40,11 @@ namespace
    }
 }
 
-void ruby::bind_font(RubyLoader& ruby)
+void ruby::bind_font()
 {
-   auto ref = ruby.bind_class("Font");
+   auto ref = Interpreter::bind_class("Font");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   ruby.bind_singleton_method(ref, "new", font_new, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "t_size", font_text_size, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "c_size", font_character_size, MRB_ARGS_REQ(1));
+   Interpreter::bind_singleton_method(ref, "new", font_new, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "t_size", font_text_size, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "c_size", font_character_size, MRB_ARGS_REQ(1));
 }

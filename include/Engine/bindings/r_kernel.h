@@ -2,5 +2,5 @@
 
 namespace ruby
 {
-   void bind_input();
+   void bind_kernel();
 }

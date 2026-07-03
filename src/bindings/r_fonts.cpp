@@ -1,5 +1,6 @@
 #include <Engine/bindings/r_fonts.h>
 #include <Engine/bindings/r_types.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace
 {
@@ -29,9 +30,9 @@ namespace
    }
 }
 
-void ruby::bind_fonts(RubyLoader& ruby, FontsCache& fonts)
+void ruby::bind_fonts(FontsCache& fonts)
 {
-   auto ref = ruby.bind_module("Fonts");
-   ruby.bind_property(ref, "@cache", &fonts);
-   ruby.bind_singleton_method(ref, "get", fonts_get, MRB_ARGS_ARG(1, 1));
+   auto ref = Interpreter::bind_module("Fonts");
+   Interpreter::bind_property(ref, "@cache", &fonts);
+   Interpreter::bind_singleton_method(ref, "get", fonts_get, MRB_ARGS_ARG(1, 1));
 }

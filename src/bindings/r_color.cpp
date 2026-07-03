@@ -1,5 +1,6 @@
 #include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_types.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace
 {
@@ -24,9 +25,9 @@ namespace
    }
 }
 
-void ruby::bind_color(RubyLoader& ruby)
+void ruby::bind_color()
 {
-   auto ref = ruby.bind_class("Color");
+   auto ref = Interpreter::bind_class("Color");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   ruby.bind_instance_method(ref, "initialize", color_initialize, MRB_ARGS_ARG(3, 1));
+   Interpreter::bind_instance_method(ref, "initialize", color_initialize, MRB_ARGS_ARG(3, 1));
 }

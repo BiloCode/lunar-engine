@@ -1,5 +1,1 @@
 # Audio
-
-```ruby
-Audio
-```

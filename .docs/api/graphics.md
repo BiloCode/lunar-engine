@@ -1,5 +1,1 @@
 # Graphics (Module)
-
-```ruby
-Graphics
-```

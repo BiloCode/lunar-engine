@@ -1,6 +1,7 @@
 #include <Engine/bindings/r_vector_float.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/utils/string.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace String = Engine::String;
 
@@ -89,15 +90,15 @@ namespace
    }
 }
 
-void ruby::bind_vector_float(RubyLoader& ruby)
+void ruby::bind_vector_float()
 {
-   auto ref = ruby.bind_class("Vector2f");
+   auto ref = Interpreter::bind_class("Vector2f");
    MRB_SET_INSTANCE_TT(ref, MRB_TT_CDATA);
-   ruby.bind_instance_method(ref, "initialize", vector_initialize, MRB_ARGS_ARG(0, 2));
-   ruby.bind_instance_method(ref, "x", vector_x, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "x=", vector_x_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "y", vector_y, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "y=", vector_y_set, MRB_ARGS_REQ(1));
-   ruby.bind_instance_method(ref, "to_s", vector_inspect, MRB_ARGS_NONE());
-   ruby.bind_instance_method(ref, "inspect", vector_inspect, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "initialize", vector_initialize, MRB_ARGS_ARG(0, 2));
+   Interpreter::bind_instance_method(ref, "x", vector_x, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "x=", vector_x_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "y", vector_y, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "y=", vector_y_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "to_s", vector_inspect, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "inspect", vector_inspect, MRB_ARGS_NONE());
 }
