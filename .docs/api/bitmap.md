@@ -1,0 +1,102 @@
+# Bitmap
+
+Represents a renderable canvas (2D).
+
+## Constructor
+
+```ruby
+Bitmap.new
+Bitmap.new(width, height)
+```
+
+- `width` — `Integer` — width in pixels
+- `height` — `Integer` — height in pixels
+
+## Properties
+
+| Property | Type | Access |
+|---|---|---|
+| `width` | `Integer` | read-only |
+| `height` | `Integer` | read-only |
+
+## Methods
+
+| Method | Returns |
+|---|---|
+| [`clear`](#clear) | `nil` |
+| [`debug`](#debug) | `nil` |
+| [`resize`](#resize) | `nil` |
+| [`dispose`](#dispose) | `nil` |
+| [`disposed?`](#disposed) | `Boolean` |
+| [`draw_text`](#draw_text) | `nil` |
+| [`draw_texture`](#draw_texture) | `nil` (stub) |
+
+---
+
+### clear
+
+```ruby
+bitmap.clear
+```
+
+Clears the entire bitmap.
+
+### debug
+
+```ruby
+bitmap.debug
+```
+
+Prints debug information to the console.
+
+### resize
+
+```ruby
+bitmap.resize(width, height)
+```
+
+Resizes the bitmap to the given dimensions.
+
+- `width` — `Integer` — new width in pixels
+- `height` — `Integer` — new height in pixels
+
+### dispose
+
+```ruby
+bitmap.dispose
+```
+
+Releases the bitmap resources.
+
+### disposed?
+
+```ruby
+bitmap.disposed?
+```
+
+Returns `true` if the bitmap has been disposed.
+
+### draw_text
+
+```ruby
+bitmap.draw_text(x, y, w, h, text, font[, align[, color]])
+```
+
+Renders text on the bitmap within the specified area.
+
+- `x` — `Float` — text area position
+- `y` — `Float` — text area position
+- `width` — `Float` — text area width
+- `height` — `Float` — text area height
+- `text` — `String`
+- `font` — `Font`
+- `align` — `Integer` (optional) — text alignment
+- `color` — `Color` (optional) — text color
+
+### draw_texture
+
+```ruby
+bitmap.draw_texture
+```
+
+Not yet implemented (stub).

@@ -1,0 +1,5 @@
+# Graphics (Module)
+
+```ruby
+Graphics
+```
