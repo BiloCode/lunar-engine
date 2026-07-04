@@ -76,26 +76,26 @@ namespace
 
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
-      const char* v_text;
+      const char* text;
       mrb_int align;
       mrb_float x, y, width, height;
       mrb_value v_font, v_color;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffffzo|oi", &x, &y, &width, &height, &v_text, &v_font, &v_color, &align);
+      mrb_int args_c = mrb_get_args(mrb, "ffffzo|oi", &x, &y, &width, &height, &text, &v_font, &v_color, &align);
 
       auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
       if (args_c == 6) {
-         bitmap->draw_text(x, y, width, height, v_text, *font);
+         bitmap->draw_text(x, y, width, height, text, *font);
       }
       else if (args_c == 7) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, width, height, v_text, *font, *color);
+         bitmap->draw_text(x, y, width, height, text, *font, *color);
       }
       else if (args_c == 8) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, width, height, v_text, *font, *color, align);
+         bitmap->draw_text(x, y, width, height, text, *font, *color, align);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
@@ -106,6 +106,21 @@ namespace
 
    mrb_value bitmap_draw_texture(mrb_state* mrb, mrb_value self)
    {
+      mrb_float x, y;
+      mrb_value v_texture;
+
+      mrb_int args_c = mrb_get_args(mrb, "ffo", &x, &y, &v_texture);
+
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+
+      if (args_c == 3) {
+         auto texture = static_cast<Texture*>(mrb_data_get_ptr(mrb, v_texture, &r_texture_type));
+         bitmap->draw_texture(x, y, *texture);
+      }
+      else {
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+      }
+
       return mrb_nil_value();
    }
 }
@@ -123,5 +138,5 @@ void ruby::bind_bitmap()
    Interpreter::bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
-   Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_REQ(3));
 }

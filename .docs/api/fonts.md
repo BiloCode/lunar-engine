@@ -1,6 +1,6 @@
 # Fonts (Module)
 
-Module that acts as a font factory. Manages an internal `FontsCache`.
+Module that acts as a font factory. Manages an internal `FontManager`.
 
 ## Methods
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Engine/core/font.h>
-#include <Engine/resources/fonts_cache.h>
+#include <Engine/resources/font_manager.h>
 
 namespace ruby
 {
-   void bind_fonts(FontsCache& fonts);
+   void bind_fonts(FontManager& manager);
 }

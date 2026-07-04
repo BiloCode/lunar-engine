@@ -29,7 +29,7 @@ Bitmap.new(width, height)
 | [`dispose`](#dispose) | `nil` |
 | [`disposed?`](#disposed) | `Boolean` |
 | [`draw_text`](#draw_text) | `nil` |
-| [`draw_texture`](#draw_texture) | `nil` (stub) |
+| [`draw_texture`](#draw_texture) | `nil` |
 
 ---
 
@@ -47,7 +47,7 @@ Clears the entire bitmap.
 bitmap.debug
 ```
 
-Prints debug information to the console.
+Draws a debug overlay showing the bitmap bounds.
 
 ### resize
 
@@ -96,7 +96,11 @@ Renders text on the bitmap within the specified area.
 ### draw_texture
 
 ```ruby
-bitmap.draw_texture
+bitmap.draw_texture(x, y, texture)
 ```
 
-Not yet implemented (stub).
+Renders a texture onto the bitmap at the given position.
+
+- `x` — `Float` — x position
+- `y` — `Float` — y position
+- `texture` — `Texture` — the texture to draw

@@ -1,44 +1,44 @@
-#include <Engine/resources/graphics_loader.h>
+#include <Engine/resources/texture_loader.h>
 #include <Engine/utils/path.h>
 #include <iostream>
 
 namespace Path = Engine::Path;
 
-GraphicsLoader::GraphicsLoader(const std::string& path) : graphics(load_graphics(path))
+TextureLoader::TextureLoader(const std::string& path) : textures(load_textures(path))
 {
 }
 
-const GraphicsCache& GraphicsLoader::get_cache()
+const TextureManager& TextureLoader::get_cache()
 {
-   return graphics;
+   return textures;
 }
 
-GraphicsCache GraphicsLoader::load_graphics(const std::string& path)
+TextureManager TextureLoader::load_textures(const std::string& path)
 {
    std::filesystem::path basepath = Path::get_executable_dir() / path;
 
    if (!std::filesystem::exists(basepath))
    {
-      std::cerr << "[GraphicsLoader]: Path does not exist -> \"" << basepath << "\"" << std::endl;
+      std::cerr << "[TextureLoader]: Path does not exist -> \"" << basepath << "\"" << std::endl;
       return {};
    }
 
    if (!std::filesystem::is_directory(basepath))
    {
-      std::cerr << "[GraphicsLoader]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
+      std::cerr << "[TextureLoader]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
       return {};
    }
 
-   GraphicsCache graphics;
+   TextureManager textures;
 
    for (const auto& entry : std::filesystem::recursive_directory_iterator(basepath))
    {
       if (entry.is_regular_file()) {
          auto key = std::filesystem::relative(entry.path(), basepath).string();
          auto value = entry.path();
-         graphics.add(key, value);
+         textures.add(key, value);
       }
    }
 
-   return graphics;
+   return textures;
 }

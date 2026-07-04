@@ -29,11 +29,13 @@ add_executable(LunarEngine
    src/bindings/r_vector_float.cpp
    src/bindings/r_bitmap.cpp
    src/bindings/r_sprite.cpp
-   src/bindings/r_graphics.cpp
+   src/bindings/r_texture.cpp
+   src/bindings/r_textures.cpp
    src/core/font.cpp
    src/core/color.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
+   src/core/texture.cpp
    src/singletons/debug.cpp
    src/singletons/scene.cpp
    src/singletons/project.cpp
@@ -46,10 +48,10 @@ add_executable(LunarEngine
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
-   src/resources/fonts_cache.cpp
-   src/resources/fonts_loader.cpp
-   src/resources/graphics_cache.cpp
-   src/resources/graphics_loader.cpp
+   src/resources/font_loader.cpp
+   src/resources/font_manager.cpp
+   src/resources/texture_loader.cpp
+   src/resources/texture_manager.cpp
 )
 
 add_custom_command(

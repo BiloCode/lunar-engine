@@ -1,21 +1,21 @@
-#include <Engine/resources/fonts_loader.h>
+#include <Engine/resources/font_loader.h>
 #include <Engine/utils/path.h>
 #include <iostream>
 
 namespace Path = Engine::Path;
 
-FontsLoader::FontsLoader(const std::string& path) : fonts(load_fonts(path))
+FontLoader::FontLoader(const std::string& path) : fonts(load_fonts(path))
 {
 }
 
-const FontsCache& FontsLoader::get_cache() const
+const FontManager& FontLoader::get_cache() const
 {
    return fonts;
 }
 
-FontsCache FontsLoader::load_fonts(const std::string& path)
+FontManager FontLoader::load_fonts(const std::string& path)
 {
-   FontsCache fonts;
+   FontManager fonts;
    std::string basepath = (Path::get_executable_dir() / path).string();
    std::string extensions[3] = { ".ttf", ".otf", ".cff" };
 

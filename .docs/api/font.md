@@ -8,6 +8,8 @@ Represents a typeface. **Cannot be instantiated directly** from Ruby; use `Fonts
 Font.new
 ```
 
+Raises `RuntimeError`. Fonts are created through the `Fonts` module.
+
 ## Methods
 
 | Method | Returns |

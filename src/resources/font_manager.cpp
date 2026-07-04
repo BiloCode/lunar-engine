@@ -1,16 +1,16 @@
-#include <Engine/resources/fonts_cache.h>
+#include <Engine/resources/font_manager.h>
 
-const sf::Font& FontsCache::back()
+const sf::Font& FontManager::back()
 {
    return get(paths.end()->first);
 }
 
-const sf::Font& FontsCache::front()
+const sf::Font& FontManager::front()
 {
    return get(paths.begin()->first);
 }
 
-const sf::Font& FontsCache::get(const std::string& key)
+const sf::Font& FontManager::get(const std::string& key)
 {
    if (auto it = fonts.find(key); it != fonts.end()) {
       return it->second;
@@ -32,7 +32,7 @@ const sf::Font& FontsCache::get(const std::string& key)
    return it->second;
 }
 
-void FontsCache::add(const std::string& key, std::filesystem::path value)
+void FontManager::add(const std::string& key, std::filesystem::path value)
 {
    auto [it, inserted] = paths.emplace(key, value);
 

@@ -1,8 +1,8 @@
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/runtime.h>
 #include <Engine/singletons/interpreter.h>
-#include <Engine/resources/fonts_loader.h>
-#include <Engine/resources/graphics_loader.h>
+#include <Engine/resources/font_loader.h>
+#include <Engine/resources/texture_loader.h>
 #include <Engine/bindings/r_font.h>
 #include <Engine/bindings/r_fonts.h>
 #include <Engine/bindings/r_color.h>
@@ -13,7 +13,8 @@
 #include <Engine/bindings/r_vector_float.h>
 #include <Engine/bindings/r_bitmap.h>
 #include <Engine/bindings/r_sprite.h>
-#include <Engine/bindings/r_graphics.h>
+#include <Engine/bindings/r_texture.h>
+#include <Engine/bindings/r_textures.h>
 #include <iostream>
 
 int main()
@@ -23,11 +24,11 @@ int main()
       Runtime::load();
       Interpreter::load();
 
-      FontsLoader f_loader("fonts");
-      GraphicsLoader g_loader("graphics");
+      FontLoader f_loader("fonts");
+      TextureLoader t_loader("graphics");
 
-      FontsCache fonts = f_loader.get_cache();
-      GraphicsCache graphics = g_loader.get_cache();
+      FontManager fonts = f_loader.get_cache();
+      TextureManager textures = t_loader.get_cache();
 
       ruby::bind_font();
       ruby::bind_input();
@@ -36,8 +37,9 @@ int main()
       ruby::bind_bitmap();
       ruby::bind_sprite();
       ruby::bind_kernel();
+      ruby::bind_texture();
       ruby::bind_fonts(fonts);
-      ruby::bind_graphics(graphics);
+      ruby::bind_textures(textures);
       ruby::bind_vector_int();
       ruby::bind_vector_float();
 

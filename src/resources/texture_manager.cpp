@@ -1,6 +1,6 @@
-#include <Engine/resources/graphics_cache.h>
+#include <Engine/resources/texture_manager.h>
 
-const sf::Texture& GraphicsCache::operator[](const std::string& key)
+const sf::Texture& TextureManager::get(const std::string& key)
 {
    if (auto it = textures.find(key); it != textures.end()) {
       return it->second;
@@ -9,7 +9,7 @@ const sf::Texture& GraphicsCache::operator[](const std::string& key)
    auto path = paths.find(key);
 
    if (path == paths.end()) {
-      throw std::runtime_error("[Graphics]: Texture not found: " + key);
+      throw std::runtime_error("[Texture]: Texture not found: " + key);
    }
 
    sf::Texture texture;
@@ -21,15 +21,15 @@ const sf::Texture& GraphicsCache::operator[](const std::string& key)
       return it->second;
    }
 
-   throw std::runtime_error("[Graphics]: Failed to load " + path->second.string());
+   throw std::runtime_error("[Texture]: Failed to load " + path->second.string());
 }
 
-void GraphicsCache::add(const std::string& key, std::filesystem::path value)
+void TextureManager::add(const std::string& key, std::filesystem::path value)
 {
    paths.emplace(key, value);
 }
 
-void GraphicsCache::remove(const std::string& key)
+void TextureManager::remove(const std::string& key)
 {
    paths.erase(key);
    if (textures.find(key) != textures.end()) {

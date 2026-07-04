@@ -17,10 +17,16 @@ namespace
       if (!mrb_nil_p(scene_prev)) {
          mrb_funcall(mrb, scene_prev, "exit_tree", 0);
          mrb_gc_unregister(mrb, scene_prev);
+         if (mrb->exc) {
+            mrb_raise(mrb, E_RUNTIME_ERROR, "exit_tree error");
+         }
       }
       Scene::current = scene;
       mrb_gc_register(mrb, Scene::current);
       mrb_funcall(mrb, Scene::current, "enter_tree", 0);
+      if (mrb->exc) {
+         mrb_raise(mrb, E_RUNTIME_ERROR, "enter_tree error");
+      }
       return mrb_nil_value();
    }
 }

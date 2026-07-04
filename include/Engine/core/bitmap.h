@@ -4,6 +4,7 @@
 #include <Engine/interfaces/disposable.h>
 #include "font.h"
 #include "color.h"
+#include "texture.h"
 
 class Bitmap : public Disposable
 {
@@ -20,7 +21,7 @@ public:
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font);
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color);
    void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align);
-   void draw_texture(const float x, const float y, const sf::Texture& texture);
+   void draw_texture(float x, float y, const Texture& texture);
 
 protected:
    void on_dispose() override;

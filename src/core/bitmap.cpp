@@ -77,7 +77,7 @@ void Bitmap::draw_text(float x, float y, float width, float height, const std::s
 {
    if (is_invalid()) return;
 
-   auto sf_text = sf::Text(font, sf::String::fromUtf8(text.begin(), text.end()), font.get_size());
+   auto sf_text = sf::Text(font, sf::String::fromUtf8(text.begin(), text.end()), font.get_font_size());
    auto sf_text_bounds = sf_text.getLocalBounds();
 
    float draw_x = x;
@@ -110,9 +110,12 @@ void Bitmap::draw_text(float x, float y, float width, float height, const std::s
    sf_dirty = true;
 }
 
-void Bitmap::draw_texture(const float x, const float y, const sf::Texture& texture)
+void Bitmap::draw_texture(float x, float y, const Texture& texture)
 {
    if (is_invalid()) return;
+   auto sf_sprite = sf::Sprite(texture);
+   sf_sprite.setPosition({ x, y });
+   sf_canvas.draw(sf_sprite);
    sf_dirty = true;
 }
 
