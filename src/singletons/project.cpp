@@ -12,8 +12,6 @@ namespace String = Engine::String;
 namespace Boolean = Engine::Boolean;
 namespace Integer = Engine::Integer;
 
-std::unordered_map<std::string, std::string> Project::settings = {};
-
 void Project::load()
 {
    auto basepath = Path::get_executable_dir() / "game.cfg";

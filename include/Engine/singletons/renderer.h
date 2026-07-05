@@ -12,7 +12,7 @@ public:
    static void refresh();
 
 private:
-   static std::vector<Renderable*> elements;
+   inline static std::vector<Renderable*> elements = {};
    static void draw(sf::RenderTarget& target);
    static void draw_cleanup();
 };

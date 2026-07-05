@@ -1,11 +1,8 @@
 #include <Engine/singletons/runtime.h>
-#include <Engine/singletons/debug.h>
-#include <Engine/singletons/scene.h>
+#include <Engine/singletons/room.h>
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/renderer.h>
 #include <string>
-
-sf::RenderWindow Runtime::window = sf::RenderWindow();
 
 void Runtime::load()
 {
@@ -28,8 +25,6 @@ void Runtime::load()
 
 void Runtime::update()
 {
-   Debug::update(window);
-
    while (const std::optional<sf::Event> event = window.pollEvent())
    {
       if (event->is<sf::Event::Closed>()) {
@@ -44,7 +39,7 @@ void Runtime::update()
    }
 
    window.clear();
-   Scene::update(window);
+   Room::update(window);
    Renderer::update(window);
    window.display();
 }

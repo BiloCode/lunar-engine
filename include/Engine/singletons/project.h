@@ -10,5 +10,5 @@ public:
    template<typename T> static T get_settings(const std::string& name, T fallback);
 
 private:
-   static std::unordered_map<std::string, std::string> settings;
+   inline static std::unordered_map<std::string, std::string> settings = {};
 };

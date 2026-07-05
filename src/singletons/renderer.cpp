@@ -1,8 +1,6 @@
 #include <Engine/singletons/renderer.h>
 #include <algorithm>
 
-std::vector<Renderable*> Renderer::elements = {};
-
 void Renderer::attach(Renderable* element)
 {
    elements.push_back(element);

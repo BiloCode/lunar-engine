@@ -5,10 +5,6 @@
 
 namespace Path = Engine::Path;
 
-mrb_state* Interpreter::mrb = nullptr;
-
-std::vector<std::filesystem::path> Interpreter::mrb_paths = {};
-
 void Interpreter::load()
 {
    if (mrb != nullptr) {

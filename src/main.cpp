@@ -1,5 +1,6 @@
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/runtime.h>
+#include <Engine/singletons/process.h>
 #include <Engine/singletons/interpreter.h>
 #include <Engine/resources/font_loader.h>
 #include <Engine/resources/texture_loader.h>
@@ -47,6 +48,7 @@ int main()
 
       while(Runtime::running())
       {
+         Process::update();
          Runtime::update();
       }
 

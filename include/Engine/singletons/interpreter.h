@@ -31,8 +31,8 @@ public:
    template<typename... Args> static mrb_value call(mrb_value ref, const std::string& name, Args... args);
 
 private:
-   static mrb_state* mrb;
-   static std::vector<std::filesystem::path> mrb_paths;
+   inline static mrb_state* mrb = nullptr;
+   inline static std::vector<std::filesystem::path> mrb_paths = {};
 };
 
 #include "interpreter.hpp"
