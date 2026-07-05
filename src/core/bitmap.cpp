@@ -80,30 +80,26 @@ void Bitmap::draw_text(float x, float y, float width, float height, const std::s
    auto sf_text = sf::Text(font, sf::String::fromUtf8(text.begin(), text.end()), font.get_font_size());
    auto sf_text_bounds = sf_text.getLocalBounds();
 
-   float draw_x = x;
-   float draw_y = y;
+   sf_text.setOrigin({ sf_text_bounds.position.x, sf_text_bounds.position.y });
 
-   switch(align)
+   float draw_x = x;
+   float draw_y = y + (height - sf_text_bounds.size.y) * 0.5f;
+
+   switch (align)
    {
       case 1:
-         draw_x += (width - sf_text_bounds.size.x) / 2.f;
-         draw_y += (height - sf_text_bounds.size.y) / 2.f;
+         draw_x += (width - sf_text_bounds.size.x) * 0.5f;
          break;
 
       case 2:
          draw_x += width - sf_text_bounds.size.x;
-         draw_y += (height - sf_text_bounds.size.y) / 2.f;
-         break;
-
-      default:
-         draw_y += (height - sf_text_bounds.size.y) / 2.f;
          break;
    }
 
    sf_text.setFillColor(color.get_value());
    sf_text.setPosition({
-      std::floor(draw_x - sf_text_bounds.position.x),
-      std::floor(draw_y - sf_text_bounds.position.y)
+      std::round(draw_x),
+      std::round(draw_y)
    });
 
    sf_canvas.draw(sf_text);

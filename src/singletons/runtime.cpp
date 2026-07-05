@@ -19,8 +19,13 @@ void Runtime::load()
       win_resizable ? sf::Style::Default : (sf::Style::Titlebar | sf::Style::Close),
       win_fullscreen ? sf::State::Fullscreen : sf::State::Windowed
    );
-   window.setFramerateLimit(fps);
-   window.setVerticalSyncEnabled(vsync);
+
+   if (vsync) {
+      window.setVerticalSyncEnabled(true);
+   }
+   else {
+      window.setFramerateLimit(fps);
+   }
 }
 
 void Runtime::update()
