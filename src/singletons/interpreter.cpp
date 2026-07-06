@@ -8,14 +8,14 @@ namespace Path = Engine::Path;
 void Interpreter::load()
 {
    if (mrb != nullptr) {
-      std::cerr << "[Interpreter]: Has been load" << std::endl;
+      std::cerr << "[Interpreter]: Ruby runtime already initialized" << std::endl;
       return;
    }
 
    auto basepath = Path::get_executable_dir() / "scripts/load_order.txt";
 
    if (!std::filesystem::exists(basepath)) {
-      throw std::runtime_error("[Interpreter]: Failed to load");
+      throw std::runtime_error("[Interpreter]: Failed to load scripts/load_order.txt");
    }
 
    std::fstream file(basepath);
@@ -41,7 +41,7 @@ void Interpreter::load()
 void Interpreter::start()
 {
    if (mrb_paths.empty()) {
-      std::cerr << "[Interpreter]: Failed to initialize Ruby runtime" << std::endl;
+      std::cerr << "[Interpreter]: No scripts to load" << std::endl;
       return;
    }
 

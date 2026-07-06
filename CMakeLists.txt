@@ -67,25 +67,27 @@ add_custom_command(
       $<TARGET_FILE_DIR:LunarEngine>/graphics
 
    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      ${CMAKE_SOURCE_DIR}/templates/fonts/Arial.ttf
+      ${CMAKE_SOURCE_DIR}/assets/fonts/Arial.ttf
       $<TARGET_FILE_DIR:LunarEngine>/fonts/Arial.ttf
 
    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      ${CMAKE_SOURCE_DIR}/templates/game.cfg
+      ${CMAKE_SOURCE_DIR}/assets/game.cfg
       $<TARGET_FILE_DIR:LunarEngine>/game.cfg
 )
 
 target_link_libraries(LunarEngine
    PRIVATE
       SFML::Graphics
-      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/build/host/lib/libmruby.a
+      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/lib/libmruby.lib
+      ws2_32
+      iphlpapi
 )
 
 target_include_directories(LunarEngine
    PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libraries/mruby/build/host/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/include
 )
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT LunarEngine)

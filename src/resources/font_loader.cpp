@@ -42,7 +42,7 @@ FontManager FontLoader::load_fonts(const std::string& path)
       {
          if (entry.path().extension().string() == extension)
          {
-            auto key = entry.path().filename();
+            auto key = entry.path().stem().string();
             auto value = entry.path();
             fonts.add(key, value);
             break;
