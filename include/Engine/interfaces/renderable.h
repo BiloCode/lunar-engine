@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "disposable.h"
 
 class Renderable : public Disposable
@@ -14,7 +13,7 @@ public:
    void set_z(float z);
    bool is_visible() const;
    void set_visible(bool visible);
-   virtual void draw(sf::RenderTarget& target) = 0;
+   virtual void draw() = 0;
 
 protected:
    float x = 0;

@@ -2,10 +2,7 @@
 #include <Engine/singletons/runtime.h>
 #include <Engine/singletons/process.h>
 #include <Engine/singletons/interpreter.h>
-#include <Engine/resources/font_loader.h>
 #include <Engine/resources/texture_loader.h>
-#include <Engine/bindings/r_font.h>
-#include <Engine/bindings/r_fonts.h>
 #include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_audio.h>
 #include <Engine/bindings/r_input.h>
@@ -25,13 +22,13 @@ int main()
       Runtime::load();
       Interpreter::load();
 
-      FontLoader f_loader("fonts");
+      //FontLoader f_loader("fonts");
       TextureLoader t_loader("graphics");
 
-      FontManager fonts = f_loader.get_cache();
+      //FontManager fonts = f_loader.get_cache();
       TextureManager textures = t_loader.get_cache();
 
-      ruby::bind_font();
+      //ruby::bind_font();
       ruby::bind_input();
       ruby::bind_color();
       ruby::bind_audio();
@@ -39,7 +36,7 @@ int main()
       ruby::bind_sprite();
       ruby::bind_kernel();
       ruby::bind_texture();
-      ruby::bind_fonts(fonts);
+      //ruby::bind_fonts(fonts);
       ruby::bind_textures(textures);
       ruby::bind_vector_int();
       ruby::bind_vector_float();

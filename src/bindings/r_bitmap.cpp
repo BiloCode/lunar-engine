@@ -1,5 +1,4 @@
 #include <Engine/bindings/r_bitmap.h>
-#include <Engine/bindings/r_font.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>
 
@@ -74,7 +73,7 @@ namespace
       return mrb_bool_value(bitmap->is_invalid());
    }
 
-   mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
+   /*mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       const char* text;
       mrb_int align;
@@ -102,7 +101,7 @@ namespace
       }
 
       return mrb_nil_value();
-   }
+   }*/
 
    mrb_value bitmap_draw_texture(mrb_state* mrb, mrb_value self)
    {
@@ -137,6 +136,6 @@ void ruby::bind_bitmap()
    Interpreter::bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
    Interpreter::bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
-   Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
+   //Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
    Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_REQ(3));
 }

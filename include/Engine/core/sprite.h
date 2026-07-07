@@ -9,7 +9,7 @@ public:
    Bitmap* bitmap = nullptr;
    Sprite();
    ~Sprite() override;
-   void draw(sf::RenderTarget& target) override;
+   void draw() override;
 
 protected:
    void on_dispose() override;

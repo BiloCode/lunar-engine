@@ -1,20 +1,17 @@
 #include <Engine/core/color.h>
 
-Color::Color(const sf::Color& color) : sf_color(color)
+Color::Color(const Color& color) : r(color.r), g(color.g), b(color.b), a(color.a)
 {
 }
 
-Color::Color(unsigned int r, unsigned int g, unsigned int b)
+Color::Color(unsigned int r, unsigned int g, unsigned int b) : r(r), g(g), b(b)
 {
-   sf_color = sf::Color(r, g, b);
 }
 
-Color::Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a)
+Color::Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a) : r(r), g(g), b(b), a(a)
 {
-   sf_color = sf::Color(r, g, b, a);
 }
 
-const sf::Color Color::get_value() const
-{
-   return sf_color;
-}
+const Color Color::Red = Color(255, 0, 0);
+const Color Color::White = Color(255, 255, 255);
+const Color Color::Black = Color(0, 0, 0);

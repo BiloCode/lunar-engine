@@ -3,26 +3,21 @@ project(LunarEngine LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIGURATION>")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIGURATION>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(FetchContent)
+set(SDLIMAGE_JXL OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_TIF OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_AVIF OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_WEBP OFF CACHE BOOL "" FORCE)
 
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.1.0
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
-
-add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/SDL_image EXCLUDE_FROM_ALL)
 
 add_executable(LunarEngine
    src/main.cpp
    src/bindings/r_types.cpp
-   src/bindings/r_font.cpp
-   src/bindings/r_fonts.cpp
    src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
    src/bindings/r_input.cpp
@@ -33,7 +28,6 @@ add_executable(LunarEngine
    src/bindings/r_sprite.cpp
    src/bindings/r_texture.cpp
    src/bindings/r_textures.cpp
-   src/core/font.cpp
    src/core/color.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
@@ -50,8 +44,6 @@ add_executable(LunarEngine
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
-   src/resources/font_loader.cpp
-   src/resources/font_manager.cpp
    src/resources/texture_loader.cpp
    src/resources/texture_manager.cpp
 )
@@ -80,8 +72,8 @@ add_custom_command(
 target_link_libraries(LunarEngine
    PRIVATE
       SDL3::SDL3
-      SFML::Graphics
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/lib/libmruby.lib
+      SDL3_image::SDL3_image
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/build/host/lib/libmruby.lib
       ws2_32
       iphlpapi
 )
@@ -89,8 +81,8 @@ target_link_libraries(LunarEngine
 target_include_directories(LunarEngine
    PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/build/host/include
 )
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT LunarEngine)
