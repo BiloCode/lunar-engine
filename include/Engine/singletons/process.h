@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3/SDL.h>
 
 class Process
 {
@@ -10,7 +10,6 @@ public:
    static float get_frame_rate();
 
 private:
-   inline static sf::Clock clock = {};
-   inline static float delta_time = 0.f;
-   inline static float frame_rate = 0.f;
+   inline static Uint64 frame_last_time = 0u;
+   inline static Uint64 frame_current_time = 0u;
 };

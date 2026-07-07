@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 project(LunarEngine LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIGURATION>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -15,6 +15,8 @@ FetchContent_Declare(SFML
     EXCLUDE_FROM_ALL
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
+
+add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 
 add_executable(LunarEngine
    src/main.cpp
@@ -77,6 +79,7 @@ add_custom_command(
 
 target_link_libraries(LunarEngine
    PRIVATE
+      SDL3::SDL3
       SFML::Graphics
       ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/lib/libmruby.lib
       ws2_32

@@ -52,6 +52,7 @@ int main()
          Runtime::update();
       }
 
+      Runtime::finish();
       Interpreter::finish();
    }
    catch(const std::exception& e) {

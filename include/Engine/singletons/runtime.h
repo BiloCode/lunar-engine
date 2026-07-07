@@ -1,16 +1,19 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3/SDL.h>
 
 class Runtime
 {
 public:
    static void load();
    static void update();
+   static void finish();
    static bool running();
 
 private:
-   inline static sf::RenderWindow window = {};
-   static void on_input(const std::optional<sf::Event>& event);
-   static void on_resize(const std::optional<sf::Event>& event);
+   inline static bool is_running = false;
+   inline static SDL_Window* window = nullptr;
+   inline static SDL_Renderer* renderer = nullptr;
+   static void on_input(const SDL_Event& event);
+   static void on_resize(const SDL_Event& event);
 };
