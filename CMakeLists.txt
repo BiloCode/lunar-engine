@@ -69,6 +69,10 @@ add_custom_command(
       $<TARGET_FILE_DIR:LunarEngine>/fonts/Arial.ttf
 
    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_SOURCE_DIR}/assets/.ruby-version
+      $<TARGET_FILE_DIR:LunarEngine>/.ruby-version
+
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
       ${CMAKE_SOURCE_DIR}/assets/game.cfg
       $<TARGET_FILE_DIR:LunarEngine>/game.cfg
 )
