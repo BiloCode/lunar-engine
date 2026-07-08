@@ -14,6 +14,10 @@ void Renderer::detach(Renderable* element)
    );
 }
 
+void Renderer::update()
+{
+}
+
 // void Renderer::update(sf::RenderTarget& target)
 // {
 //    draw(target);

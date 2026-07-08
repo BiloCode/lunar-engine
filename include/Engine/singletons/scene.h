@@ -1,14 +1,13 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <mruby.h>
 #include <vector>
 
-class Room
+class Scene
 {
 public:
-   static void update(sf::RenderTarget& target);
-   static void set_current(const mrb_value& room);
+   static void update();
+   static void set_current(const mrb_value& scene);
    static const mrb_value& get_current();
 
 private:

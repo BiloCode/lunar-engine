@@ -32,10 +32,10 @@ add_executable(LunarEngine
    src/core/bitmap.cpp
    src/core/sprite.cpp
    src/core/texture.cpp
-   src/singletons/room.cpp
+   src/singletons/scene.cpp
    src/singletons/project.cpp
-   src/singletons/process.cpp
    src/singletons/runtime.cpp
+   src/singletons/timestamp.cpp
    src/singletons/interpreter.cpp
    src/singletons/renderer.cpp
    src/interfaces/disposable.cpp
@@ -44,7 +44,7 @@ add_executable(LunarEngine
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
-   src/resources/texture_loader.cpp
+   src/resources/font_manager.cpp
    src/resources/texture_manager.cpp
 )
 

@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-class Process
+class Timestamp
 {
 public:
    static void update();
@@ -11,5 +11,5 @@ public:
 
 private:
    inline static Uint64 frame_last_time = 0u;
-   inline static Uint64 frame_current_time = 0u;
+   inline static Uint64 frame_current_time = SDL_GetPerformanceCounter();
 };

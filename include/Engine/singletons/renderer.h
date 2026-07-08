@@ -8,7 +8,7 @@ class Renderer
 public:
    static void attach(Renderable* element);
    static void detach(Renderable* element);
-   //static void update(sf::RenderTarget& target);
+   static void update();
    static void refresh();
 
 private:

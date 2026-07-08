@@ -1,8 +1,38 @@
 #include <Engine/resources/texture_manager.h>
+#include <Engine/singletons/runtime.h>
+#include <Engine/utils/path.h>
+
+namespace Path = Engine::Path;
+
+TextureManager::TextureManager()
+{
+   auto basepath = Path::get_executable_dir() / "graphics";
+
+   if (!std::filesystem::exists(basepath))
+   {
+      std::cerr << "[TextureManager]: Path does not exist -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   if (!std::filesystem::is_directory(basepath))
+   {
+      std::cerr << "[TextureManager]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   for (const auto& entry : std::filesystem::recursive_directory_iterator(basepath))
+   {
+      if (entry.is_regular_file()) {
+         auto key = std::filesystem::relative(entry.path(), basepath).string();
+         auto value = entry.path();
+         texture_paths.emplace(key, value);
+      }
+   }
+}
 
 const SDL_Texture* TextureManager::get(const std::string& key)
 {
-   if (auto it = texture.find(key); it != texture.end()) {
+   if (auto it = texture_files.find(key); it != texture_files.end()) {
       return it->second;
    }
 
@@ -12,27 +42,12 @@ const SDL_Texture* TextureManager::get(const std::string& key)
       throw std::runtime_error("[Texture]: Texture not found: " + key);
    }
 
-   /*sf::Texture texture;
+   SDL_Texture* texture = IMG_LoadTexture(Runtime::get_renderer(), path->second.string().c_str());
 
-   if (texture.loadFromFile(path->second)) {
-      texture.setSmooth(false);
-      texture.setRepeated(false);
-      auto [it, _] = texture.emplace(key, std::move(texture));
+   if (texture != NULL) {
+      auto [it, inserted] = texture_files.emplace(key, texture);
       return it->second;
-   }*/
+   }
 
    throw std::runtime_error("[Texture]: Failed to load " + path->second.string());
-}
-
-void TextureManager::add(const std::string& key, std::filesystem::path value)
-{
-   texture_paths.emplace(key, value);
-}
-
-void TextureManager::remove(const std::string& key)
-{
-   texture_paths.erase(key);
-   if (texture.find(key) != texture.end()) {
-      texture.erase(key);
-   }
 }

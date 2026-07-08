@@ -1,9 +1,11 @@
 #include <Engine/singletons/runtime.h>
+#include <Engine/singletons/scene.h>
 #include <Engine/singletons/project.h>
+#include <Engine/singletons/renderer.h>
 #include <string>
 #include <iostream>
 
-void Runtime::load()
+void Runtime::start()
 {
    if (!SDL_Init(SDL_INIT_VIDEO)) {
       throw std::runtime_error("[Runtime]: Failed to initialize SDL: " + std::string(SDL_GetError()));
@@ -50,8 +52,12 @@ void Runtime::update()
          is_running = false;
       }
    }
-
+   
    SDL_RenderClear(renderer);
+   
+   Scene::update();
+   Renderer::update();
+
    SDL_RenderPresent(renderer);
 }
 
@@ -75,10 +81,12 @@ bool Runtime::running()
    return is_running;
 }
 
-void Runtime::on_input(const SDL_Event& event)
+SDL_Window* Runtime::get_window()
 {
+   return window;
 }
 
-void Runtime::on_resize(const SDL_Event& event)
+SDL_Renderer* Runtime::get_renderer()
 {
+   return renderer;
 }

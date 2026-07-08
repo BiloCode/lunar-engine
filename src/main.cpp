@@ -1,8 +1,9 @@
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/runtime.h>
-#include <Engine/singletons/process.h>
+#include <Engine/singletons/timestamp.h>
 #include <Engine/singletons/interpreter.h>
-#include <Engine/resources/texture_loader.h>
+#include <Engine/resources/font_manager.h>
+#include <Engine/resources/texture_manager.h>
 #include <Engine/bindings/r_color.h>
 #include <Engine/bindings/r_audio.h>
 #include <Engine/bindings/r_input.h>
@@ -19,16 +20,11 @@ int main()
 {
    try {
       Project::load();
-      Runtime::load();
       Interpreter::load();
 
-      //FontLoader f_loader("fonts");
-      TextureLoader t_loader("graphics");
+      auto fonts = FontManager();
+      auto textures = TextureManager();
 
-      //FontManager fonts = f_loader.get_cache();
-      TextureManager textures = t_loader.get_cache();
-
-      //ruby::bind_font();
       ruby::bind_input();
       ruby::bind_color();
       ruby::bind_audio();
@@ -36,17 +32,17 @@ int main()
       ruby::bind_sprite();
       ruby::bind_kernel();
       ruby::bind_texture();
-      //ruby::bind_fonts(fonts);
       ruby::bind_textures(textures);
       ruby::bind_vector_int();
       ruby::bind_vector_float();
 
+      Runtime::start();
       Interpreter::start();
 
       while(Runtime::running())
       {
-         Process::update();
          Runtime::update();
+         Timestamp::update();
       }
 
       Runtime::finish();
