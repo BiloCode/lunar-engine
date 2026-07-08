@@ -13,11 +13,14 @@ set(SDLIMAGE_AVIF OFF CACHE BOOL "" FORCE)
 set(SDLIMAGE_WEBP OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(third_party/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/SDL_ttf EXCLUDE_FROM_ALL)
 add_subdirectory(third_party/SDL_image EXCLUDE_FROM_ALL)
 
 add_executable(LunarEngine
    src/main.cpp
    src/bindings/r_types.cpp
+   src/bindings/r_font.cpp
+   src/bindings/r_fonts.cpp
    src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
    src/bindings/r_input.cpp
@@ -28,6 +31,7 @@ add_executable(LunarEngine
    src/bindings/r_sprite.cpp
    src/bindings/r_texture.cpp
    src/bindings/r_textures.cpp
+   src/core/font.cpp
    src/core/color.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
@@ -72,6 +76,7 @@ add_custom_command(
 target_link_libraries(LunarEngine
    PRIVATE
       SDL3::SDL3
+      SDL3_ttf::SDL3_ttf
       SDL3_image::SDL3_image
       ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/build/host/lib/libmruby.lib
       ws2_32

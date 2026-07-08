@@ -13,6 +13,6 @@ public:
 
 private:
    inline static std::vector<Renderable*> elements = {};
-   //static void draw(sf::RenderTarget& target);
-   //static void draw_cleanup();
+   static void draw();
+   static void draw_cleanup();
 };

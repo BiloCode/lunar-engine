@@ -1,15 +1,16 @@
 #include <Engine/bindings/r_types.h>
+#include <Engine/core/font.h>
 #include <Engine/core/color.h>
 #include <Engine/core/vector.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
 #include <Engine/core/texture.h>
 
-const mrb_data_type r_texture_type = {
-   "Texture",
+const mrb_data_type r_font_type = {
+   "Font",
    [](mrb_state*, void* ptr) {
       if (ptr) {
-         delete static_cast<Texture*>(ptr);
+         delete static_cast<Font*>(ptr);
       }
    }
 };
@@ -19,6 +20,15 @@ const mrb_data_type r_color_type = {
    [](mrb_state*, void* ptr) {
       if (ptr) {
          delete static_cast<Color*>(ptr);
+      }
+   }
+};
+
+const mrb_data_type r_texture_type = {
+   "Texture",
+   [](mrb_state*, void* ptr) {
+      if (ptr) {
+         delete static_cast<Texture*>(ptr);
       }
    }
 };
@@ -69,7 +79,13 @@ const mrb_data_type r_audio_type = {
    nullptr
 };
 
+const mrb_data_type r_fonts_type = {
+   "Fonts",
+   nullptr
+};
+
 const mrb_data_type r_textures_type = {
    "Graphics",
    nullptr
 };
+

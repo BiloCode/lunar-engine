@@ -13,11 +13,6 @@ Sprite::~Sprite()
 
 void Sprite::draw()
 {
-   /*if (bitmap && bitmap->is_valid()) {
-      auto sprite = sf::Sprite(bitmap->get_texture());
-      sprite.setPosition({ x, y });
-      target.draw(sprite);
-   }*/
 }
 
 void Sprite::on_dispose()

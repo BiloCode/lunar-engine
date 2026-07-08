@@ -30,6 +30,15 @@ TextureManager::TextureManager()
    }
 }
 
+TextureManager::~TextureManager()
+{
+   for (auto& [_, texture] : texture_files) {
+      if (texture != nullptr) {
+         SDL_DestroyTexture(texture);
+      }
+   }
+}
+
 const SDL_Texture* TextureManager::get(const std::string& key)
 {
    if (auto it = texture_files.find(key); it != texture_files.end()) {
@@ -39,7 +48,7 @@ const SDL_Texture* TextureManager::get(const std::string& key)
    auto path = texture_paths.find(key);
 
    if (path == texture_paths.end()) {
-      throw std::runtime_error("[Texture]: Texture not found: " + key);
+      throw std::runtime_error("[Texture]: Texture not found -> \"" + key + "\"");
    }
 
    SDL_Texture* texture = IMG_LoadTexture(Runtime::get_renderer(), path->second.string().c_str());
