@@ -1,8 +1,15 @@
 #include <Engine/core/bitmap.h>
+#include <Engine/singletons/runtime.h>
 #include <iostream>
 
-Bitmap::Bitmap(unsigned int width, unsigned int height) : width(std::max(width, 1u)), height(std::max(height, 1u))
+Bitmap::Bitmap() : width(1u), height(1u), texture_dirty(true), texture_invalid(true)
 {
+   surface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_RGBA32);
+}
+
+Bitmap::Bitmap(int width, int height) : width(std::max(width, 1)), height(std::max(height, 1)), texture_dirty(true), texture_invalid(true)
+{
+   surface = SDL_CreateSurface(this->width, this->height, SDL_PIXELFORMAT_RGBA32);
 }
 
 Bitmap::~Bitmap()
@@ -10,112 +17,129 @@ Bitmap::~Bitmap()
    dispose();
 }
 
-unsigned int Bitmap::get_width() const
+int Bitmap::get_width() const
 {
    return width;
 }
 
-unsigned int Bitmap::get_height() const
+int Bitmap::get_height() const
 {
    return height;
 }
 
-/*const sf::Texture& Bitmap::get_texture()
+Font* Bitmap::get_font() const
 {
-   if (sf_dirty) {
-      sf_canvas.display();
-      sf_dirty = false;
+   return font;
+}
+
+SDL_Texture* Bitmap::get_texture()
+{
+   if (texture_invalid) {
+      texture = SDL_CreateTexture(Runtime::get_renderer(), 
+         SDL_PIXELFORMAT_RGBA32,
+         SDL_TEXTUREACCESS_STREAMING,
+         this->width,
+         this->height
+      );
+
+      if (texture == nullptr) {
+         throw std::runtime_error(SDL_GetError());
+      }
+
+      texture_invalid = false;
    }
-   return sf_canvas.getTexture();
-}*/
+
+   if (texture_dirty) {
+      SDL_UpdateTexture(texture, nullptr, surface->pixels, surface->pitch);
+      texture_dirty = false;
+   }
+
+   return texture;
+}
+
+void Bitmap::set_font(Font* font)
+{
+   this->font = font;
+}
 
 void Bitmap::clear()
 {
    if (is_invalid()) return;
-   //sf_canvas.clear(sf::Color::Transparent);
-   sf_dirty = true;
+   SDL_FillSurfaceRect(surface, nullptr, SDL_MapSurfaceRGBA(surface, 0, 0, 0, 0));
+   texture_dirty = true;
 }
 
-void Bitmap::debug()
+void Bitmap::resize(int width, int height)
 {
    if (is_invalid()) return;
-   /*auto sf_bounds = sf::RectangleShape();
-   sf_bounds.setSize({ static_cast<float>(width), static_cast<float>(height) });
-   sf_bounds.setPosition({ 0.f, 0.f });
-   sf_bounds.setFillColor(sf::Color::Transparent);
-   sf_bounds.setOutlineThickness(-2.f);
-   sf_bounds.setOutlineColor(sf::Color::Red);
-   sf_canvas.draw(sf_bounds);*/
-   sf_dirty = true;
-}
+   
+   this->width = std::max(width, 1);
+   this->height = std::max(height, 1);
 
-void Bitmap::resize(unsigned int width, unsigned int height)
-{
-   if (is_invalid()) return;
-   this->width = std::max(width, 1u);
-   this->height = std::max(height, 1u);
-   /*if (!this->sf_canvas.resize({ this->width, this->height }))
+   auto new_surface = SDL_CreateSurface(this->width, this->height, SDL_PIXELFORMAT_RGBA32);
+
+   if (surface == nullptr)
    {
-      throw std::runtime_error("Failed to resize Bitmap");
-   }*/
-   sf_dirty = true;
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   SDL_DestroySurface(surface);
+   surface = new_surface;
+
+   SDL_DestroyTexture(texture);
+   texture = nullptr;
+
+   texture_dirty = true;
+   texture_invalid = true;
 }
 
-// void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font)
-// {
-//    if (is_invalid()) return;
-//    draw_text(x, y, width, height, text, font, Color::Black, 0);
-// }
-
-// void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color)
-// {
-//    if (is_invalid()) return;
-//    draw_text(x, y, width, height, text, font, color, 0);
-// }
-
-// void Bitmap::draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align)
-// {
-//    if (is_invalid()) return;
-
-//    auto sf_text = sf::Text(font, sf::String::fromUtf8(text.begin(), text.end()), font.get_font_size());
-//    auto sf_text_bounds = sf_text.getLocalBounds();
-
-//    sf_text.setOrigin({ sf_text_bounds.position.x, sf_text_bounds.position.y });
-
-//    float draw_x = x;
-//    float draw_y = y + (height - sf_text_bounds.size.y) * 0.5f;
-
-//    switch (align)
-//    {
-//       case 1:
-//          draw_x += (width - sf_text_bounds.size.x) * 0.5f;
-//          break;
-
-//       case 2:
-//          draw_x += width - sf_text_bounds.size.x;
-//          break;
-//    }
-
-//    sf_text.setFillColor(color.get_value());
-//    sf_text.setPosition({
-//       std::round(draw_x),
-//       std::round(draw_y)
-//    });
-
-//    sf_canvas.draw(sf_text);
-//    sf_dirty = true;
-// }
-
-void Bitmap::draw_texture(float x, float y, const Texture& texture)
+void Bitmap::draw_rect(int x, int y, int width, int height, const Color& color, int thickness)
 {
    if (is_invalid()) return;
-   /*auto sf_sprite = sf::Sprite(texture);
-   sf_sprite.setPosition({ x, y });
-   sf_canvas.draw(sf_sprite);*/
-   sf_dirty = true;
+
+   auto pixel = SDL_MapSurfaceRGBA(surface, color.r, color.g, color.b, color.a);
+
+   SDL_Rect top { x, y, width, thickness };
+   if (!SDL_FillSurfaceRect(surface, &top, pixel)) {
+      throw std::runtime_error(SDL_GetError());
+   }
+   
+   SDL_Rect bottom { x, y + height - thickness, width, thickness };
+   if (!SDL_FillSurfaceRect(surface, &bottom, pixel)) {
+      throw std::runtime_error(SDL_GetError());
+   }
+   
+   SDL_Rect left { x, y, thickness, height };
+   if (!SDL_FillSurfaceRect(surface, &left, pixel)) {
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   SDL_Rect right { x + width - thickness, y, thickness, height };
+   if (!SDL_FillSurfaceRect(surface, &right, pixel)) {
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   texture_dirty = true;
+}
+
+void Bitmap::draw_text(int x, int y, int width, int height, const std::string& text, const Color& color, int align)
+{
+   if (is_invalid()) return;
+   texture_dirty = true;
+}
+
+void Bitmap::draw_limits()
+{
+   if (is_invalid()) return;
+   draw_rect(1, 1, this->width - 2, this->height - 2, Color::Red);
 }
 
 void Bitmap::on_dispose()
 {
-   //sf_canvas = sf::RenderTexture();
+   SDL_DestroySurface(surface);
+   SDL_DestroyTexture(texture);
+   surface = nullptr;
+   texture = nullptr;
+   texture_dirty = false;
+   texture_invalid = false;
 }

@@ -37,17 +37,29 @@ namespace
       return mrb_fixnum_value(bitmap->get_height());
    }
 
+   mrb_value bitmap_font(mrb_state* mrb, mrb_value self)
+   {
+      auto* klass = mrb_class_get(mrb, "Font");
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      return mrb_obj_value(
+         mrb_data_object_alloc(mrb, klass, bitmap->get_font(), &r_font_type)
+      );
+   }
+
+   mrb_value bitmap_font_set(mrb_state* mrb, mrb_value self)
+   {
+      mrb_value obj;
+      mrb_get_args(mrb, "o", &obj);
+      auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, obj, &r_font_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      bitmap->set_font(font);
+      return mrb_nil_value();
+   }
+
    mrb_value bitmap_clear(mrb_state* mrb, mrb_value self)
    {
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
       bitmap->clear();
-      return mrb_nil_value();
-   }
-
-   mrb_value bitmap_debug(mrb_state* mrb, mrb_value self)
-   {
-      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-      bitmap->debug();
       return mrb_nil_value();
    }
 
@@ -73,7 +85,7 @@ namespace
       return mrb_bool_value(bitmap->is_invalid());
    }
 
-   /*mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
+   mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       const char* text;
       mrb_int align;
@@ -85,41 +97,28 @@ namespace
       auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
-      if (args_c == 6) {
-         bitmap->draw_text(x, y, width, height, text, *font);
+      if (args_c == 5) {
+         bitmap->draw_text(x, y, width, height, text);
+      }
+      else if (args_c == 6) {
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
+         bitmap->draw_text(x, y, width, height, text, *color);
       }
       else if (args_c == 7) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, width, height, text, *font, *color);
-      }
-      else if (args_c == 8) {
-         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
-         bitmap->draw_text(x, y, width, height, text, *font, *color, align);
+         bitmap->draw_text(x, y, width, height, text, *color, align);
       }
       else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
       }
 
       return mrb_nil_value();
-   }*/
+   }
 
-   mrb_value bitmap_draw_texture(mrb_state* mrb, mrb_value self)
+   mrb_value bitmap_draw_limits(mrb_state* mrb, mrb_value self)
    {
-      mrb_float x, y;
-      mrb_value v_texture;
-
-      mrb_int args_c = mrb_get_args(mrb, "ffo", &x, &y, &v_texture);
-
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-
-      if (args_c == 3) {
-         auto texture = static_cast<Texture*>(mrb_data_get_ptr(mrb, v_texture, &r_texture_type));
-         bitmap->draw_texture(x, y, *texture);
-      }
-      else {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
-      }
-
+      bitmap->draw_limits();
       return mrb_nil_value();
    }
 }
@@ -131,11 +130,12 @@ void ruby::bind_bitmap()
    Interpreter::bind_instance_method(ref, "initialize", bitmap_initialize, MRB_ARGS_ARG(0, 2));
    Interpreter::bind_instance_method(ref, "width", bitmap_width, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "font", bitmap_font, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "font=", bitmap_font_set, MRB_ARGS_REQ(1));
    Interpreter::bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
-   Interpreter::bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
    Interpreter::bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
-   //Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(6, 2));
-   Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_REQ(3));
+   Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(5, 2));
+   Interpreter::bind_instance_method(ref, "draw_limits", bitmap_draw_limits, MRB_ARGS_NONE());
 }

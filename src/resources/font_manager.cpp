@@ -46,13 +46,7 @@ FontManager::FontManager()
 
 FontManager::~FontManager()
 {
-   for (auto& [_, font] : font_files) {
-      if (font != nullptr) {
-         TTF_CloseFont(font);
-      }
-   }
-
-   TTF_Quit();
+   dispose();
 }
 
 const TTF_Font* FontManager::get(const std::string& key)
@@ -69,10 +63,21 @@ const TTF_Font* FontManager::get(const std::string& key)
 
    TTF_Font* font = TTF_OpenFont(path->second.string().c_str(), 16);
 
-   if (font != NULL) {
+   if (font != nullptr) {
       auto [it, inserted] = font_files.emplace(key, font);
       return it->second;
    }
 
    throw std::runtime_error("[Fonts]: Failed to load " + path->second.string());
+}
+
+void FontManager::on_dispose()
+{
+   for (auto& [_, font] : font_files) {
+      if (font != nullptr) {
+         TTF_CloseFont(font);
+      }
+   }
+
+   TTF_Quit();
 }

@@ -7,8 +7,7 @@ namespace
    mrb_value fonts_get(mrb_state* mrb, mrb_value self)
    {
       const char* f_name;
-      mrb_int f_size = 0;
-      mrb_int args_c = mrb_get_args(mrb, "z|i", &f_name, &f_size);
+      mrb_int args_c = mrb_get_args(mrb, "z", &f_name);
       
       auto f_class = mrb_class_get(mrb, "Font");
       auto f_module = mrb_module_get(mrb, "Fonts");

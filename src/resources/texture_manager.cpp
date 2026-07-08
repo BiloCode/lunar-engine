@@ -32,11 +32,7 @@ TextureManager::TextureManager()
 
 TextureManager::~TextureManager()
 {
-   for (auto& [_, texture] : texture_files) {
-      if (texture != nullptr) {
-         SDL_DestroyTexture(texture);
-      }
-   }
+   dispose();
 }
 
 const SDL_Texture* TextureManager::get(const std::string& key)
@@ -59,4 +55,13 @@ const SDL_Texture* TextureManager::get(const std::string& key)
    }
 
    throw std::runtime_error("[Texture]: Failed to load " + path->second.string());
+}
+
+void TextureManager::on_dispose()
+{
+   for (auto& [_, texture] : texture_files) {
+      if (texture != nullptr) {
+         SDL_DestroyTexture(texture);
+      }
+   }
 }

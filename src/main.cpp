@@ -49,6 +49,9 @@ int main()
          Timestamp::update();
       }
 
+      fonts.dispose();
+      textures.dispose();
+
       Runtime::finish();
       Interpreter::finish();
    }

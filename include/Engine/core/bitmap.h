@@ -1,30 +1,36 @@
 #pragma once
 
 #include <Engine/interfaces/disposable.h>
+#include "font.h"
 #include "color.h"
 #include "texture.h"
 
 class Bitmap : public Disposable
 {
 public:
-   Bitmap() = default;
-   Bitmap(unsigned int width, unsigned int height);
+   Bitmap();
+   Bitmap(int width, int height);
    ~Bitmap() override;
-   unsigned int get_width() const;
-   unsigned int get_height() const;
+   int get_width() const;
+   int get_height() const;
+   Font* get_font() const;
+   SDL_Texture* get_texture();
+   void set_font(Font* font);
    void clear();
-   void debug();
-   void resize(unsigned int width, unsigned int height);
-   // void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font);
-   // void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color);
-   // void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align);
-   void draw_texture(float x, float y, const Texture& texture);
+   void resize(int width, int height);
+   void draw_rect(int x, int y, int width, int height, const Color& color, int thickness = 1);
+   void draw_text(int x, int y, int width, int height, const std::string& text, const Color& color = Color::Black, int align = 0);
+   void draw_limits();
 
 protected:
    void on_dispose() override;
 
 private:
-   bool sf_dirty;
-   unsigned int width;
-   unsigned int height;
+   Font* font;
+   SDL_Surface* surface;
+   SDL_Texture* texture;
+   int width;
+   int height;
+   bool texture_dirty;
+   bool texture_invalid;
 };
