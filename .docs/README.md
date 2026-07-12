@@ -1,6 +1,6 @@
 # Lunar Engine
 
-**Lunar Engine** is a C++ game engine built on top of **SFML**. It exposes a Ruby scripting layer via **mruby**, allowing game logic to be written entirely in Ruby while the heavy lifting (rendering, audio, input) stays in native C++.
+**Lunar Engine** is a C++ game engine built on top of **SDL3**. It exposes a Ruby scripting layer via **mruby**, allowing game logic to be written entirely in Ruby while the heavy lifting (rendering, audio, input) stays in native C++.
 
 <div align="center">
 
@@ -16,7 +16,7 @@
 └──────────┬──────────┘
 │
 ┌──────────▼──────────┐
-│   C++ Core (SFML)   │
+│   C++ Core (SDL3)   │
 │  (rendering, audio, │
 │   input, resources) │
 └─────────────────────┘

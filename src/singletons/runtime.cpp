@@ -2,6 +2,7 @@
 #include <Engine/singletons/scene.h>
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/renderer.h>
+#include <Engine/singletons/environment.h>
 #include <string>
 #include <iostream>
 
@@ -55,6 +56,7 @@ void Runtime::update()
    
    SDL_RenderClear(renderer);
    
+   Environment::update();
    Scene::update();
    Renderer::update();
 

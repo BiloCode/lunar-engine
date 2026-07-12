@@ -40,9 +40,10 @@ add_executable(LunarEngine
    src/singletons/scene.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
+   src/singletons/renderer.cpp
    src/singletons/timestamp.cpp
    src/singletons/interpreter.cpp
-   src/singletons/renderer.cpp
+   src/singletons/environment.cpp
    src/interfaces/disposable.cpp
    src/interfaces/renderable.cpp
    src/utils/path.cpp
