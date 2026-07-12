@@ -1,11 +1,6 @@
 #pragma once
 
 #include <mruby.h>
-#include <mruby/data.h>
-#include <mruby/class.h>
-#include <mruby/string.h>
-#include <mruby/compile.h>
-#include <mruby/variable.h>
 #include <string>
 #include <vector>
 #include <filesystem>

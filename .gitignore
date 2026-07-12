@@ -1,6 +1,6 @@
 build
 out
-libs
+third_party
 .cache
 .idea
 .vs

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <Engine/interfaces/disposable.h>
 #include "font.h"
 #include "color.h"
@@ -9,26 +8,27 @@
 class Bitmap : public Disposable
 {
 public:
-   Bitmap() = default;
-   Bitmap(unsigned int width, unsigned int height);
+   Bitmap();
+   Bitmap(int width, int height);
    ~Bitmap() override;
-   unsigned int get_width() const;
-   unsigned int get_height() const;
-   const sf::Texture& get_texture();
-   void clear();
+   Font* font;
+   int get_width() const;
+   int get_height() const;
+   SDL_Texture* get_texture();
    void debug();
-   void resize(unsigned int width, unsigned int height);
-   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font);
-   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color);
-   void draw_text(float x, float y, float width, float height, const std::string& text, const Font& font, const Color& color, int align);
-   void draw_texture(float x, float y, const Texture& texture);
+   void clear();
+   void resize(int width, int height);
+   void draw_rect(int x, int y, int width, int height, const Color& color = Color::Red, int thickness = 1);
+   void draw_text(int x, int y, int width, int height, const std::string& text, const Color& color = Color::Black, int align = 0);
 
 protected:
    void on_dispose() override;
 
 private:
-   bool sf_dirty;
-   unsigned int width;
-   unsigned int height;
-   sf::RenderTexture sf_canvas;
+   SDL_Surface* surface;
+   SDL_Texture* texture;
+   int width;
+   int height;
+   bool texture_dirty;
+   bool texture_invalid;
 };

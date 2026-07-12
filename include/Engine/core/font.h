@@ -1,19 +1,17 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3_ttf/SDL_ttf.h>
+#include <string>
 #include "vector.h"
 
 class Font
 {
 public:
-   Font(const sf::Font& font);
-   Font(const sf::Font& font, unsigned int font_size);
-   operator const sf::Font&() const;
-   unsigned int get_font_size() const;
-   const Vector<float> get_text_size(const std::string& text) const;
-   const Vector<float> get_character_size(char c) const;
+    Font(const TTF_Font* font);
+    TTF_Font* c_sdl() const;
+    const Vector<int> get_text_size(const std::string& text) const;
+    const Vector<int> get_character_size(char c) const;
 
 private:
-   const sf::Font* sf_font;
-   unsigned int sf_font_size;
+    TTF_Font* font;
 };

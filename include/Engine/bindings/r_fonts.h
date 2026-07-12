@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Engine/core/font.h>
-#include <Engine/resources/font_manager.h>
+class FontManager;
 
 namespace ruby
 {

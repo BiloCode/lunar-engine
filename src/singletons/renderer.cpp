@@ -1,5 +1,7 @@
 #include <Engine/singletons/renderer.h>
+
 #include <algorithm>
+#include <Engine/interfaces/renderable.h>
 
 void Renderer::attach(Renderable* element)
 {
@@ -14,9 +16,9 @@ void Renderer::detach(Renderable* element)
    );
 }
 
-void Renderer::update(sf::RenderTarget& target)
+void Renderer::update()
 {
-   draw(target);
+   draw();
    draw_cleanup();
 }
 
@@ -27,11 +29,12 @@ void Renderer::refresh()
    });
 }
 
-void Renderer::draw(sf::RenderTarget& target)
+void Renderer::draw()
 {
-   for (auto* element : elements) {
+   for (auto* element : elements)
+   {
       if (element->is_valid() && element->is_visible()) {
-         element->draw(target);
+         element->draw();
       }
    }
 }

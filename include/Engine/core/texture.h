@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3/SDL.h>
 
 class Texture
 {
 public:
-   Texture(const sf::Texture& texture);
-   operator const sf::Texture&() const;
+   Texture(const SDL_Texture* texture);
+   operator const SDL_Texture*() const;
 
 private:
-   const sf::Texture* sf_texture;
+   const SDL_Texture* texture;
 };

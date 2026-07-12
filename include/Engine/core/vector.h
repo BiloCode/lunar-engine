@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <type_traits>
 
 template<typename T>
 class Vector
@@ -21,7 +21,8 @@ public:
    void set_y(T value);
 
 private:
-   sf::Vector2<T> sf_vector;
+   T x;
+   T y;
 };
 
 #include "vector.tpp"

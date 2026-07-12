@@ -1,7 +1,11 @@
 #include <Engine/bindings/r_sprite.h>
-#include <Engine/bindings/r_types.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
+#include <Engine/bindings/r_types.h>
+#include <Engine/bindings/r_values.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace
@@ -15,23 +19,32 @@ namespace
 
    mrb_value sprite_bitmap(mrb_state* mrb, mrb_value self)
    {
-      auto* klass = mrb_class_get(mrb, "Bitmap");
       auto* sprite = static_cast<Sprite*>(mrb_data_get_ptr(mrb, self, &r_sprite_type));
-      if (!sprite->bitmap) {
-         return mrb_nil_value();
+
+      if (auto it = sprite_bitmaps.find(sprite); it != sprite_bitmaps.end()) {
+         return it->second;
       }
-      return mrb_obj_value(
-         mrb_data_object_alloc(mrb, klass, sprite->bitmap, &r_bitmap_type)
-      );
+
+      return mrb_nil_value();
    }
 
    mrb_value sprite_bitmap_set(mrb_state* mrb, mrb_value self)
    {
       mrb_value obj;
       mrb_get_args(mrb, "o", &obj);
+
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, obj, &r_bitmap_type));
       auto* sprite = static_cast<Sprite*>(mrb_data_get_ptr(mrb, self, &r_sprite_type));
+
+      if (auto it = sprite_bitmaps.find(sprite); it != sprite_bitmaps.end()) {
+         mrb_gc_unregister(mrb, it->second);
+         sprite_bitmaps.erase(it);
+      }
+
       sprite->bitmap = bitmap;
+      sprite_bitmaps[sprite] = obj;
+      mrb_gc_register(mrb, obj);
+
       return mrb_nil_value();
    }
 

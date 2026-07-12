@@ -6,10 +6,20 @@ Global engine methods available everywhere.
 
 | Method | Returns |
 |---|---|
-| [`cpp_set_background`](#cpp_set_background) | `nil` (stub) |
-| [`cpp_set_room`](#cpp_set_room) | `nil` |
+| [`cpp_set_scene`](#cpp_set_scene) | `nil` |
+| [`cpp_set_background`](#cpp_set_background) | `nil` |
 
 ---
+
+### cpp_set_scene
+
+```ruby
+cpp_set_scene(scene)
+```
+
+Switches the active scene. Calls `exit_tree` on the previous scene and `enter_tree` on the new one.
+
+- `scene` — `Object` — the new scene object
 
 ### cpp_set_background
 
@@ -17,16 +27,6 @@ Global engine methods available everywhere.
 cpp_set_background(color)
 ```
 
-Not yet implemented (stub).
+Sets the background color of the environment.
 
-- `color` — `Color` — background color
-
-### cpp_set_room
-
-```ruby
-cpp_set_room(room)
-```
-
-Switches the active room. Calls `exit_tree` on the previous room and `enter_tree` on the new one.
-
-- `room` — `Object` — the new room object
+- `color` — `Color` — the background color

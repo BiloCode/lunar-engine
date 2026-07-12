@@ -2,23 +2,24 @@ cmake_minimum_required(VERSION 3.28)
 project(LunarEngine LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIGURATION>")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIGURATION>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(FetchContent)
+set(SDLIMAGE_JXL OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_TIF OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_AVIF OFF CACHE BOOL "" FORCE)
+set(SDLIMAGE_WEBP OFF CACHE BOOL "" FORCE)
 
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.1.0
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
+add_subdirectory(third_party/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/SDL_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/SDL_image EXCLUDE_FROM_ALL)
 
 add_executable(LunarEngine
    src/main.cpp
    src/bindings/r_types.cpp
+   src/bindings/r_values.cpp
    src/bindings/r_font.cpp
    src/bindings/r_fonts.cpp
    src/bindings/r_color.cpp
@@ -36,21 +37,20 @@ add_executable(LunarEngine
    src/core/bitmap.cpp
    src/core/sprite.cpp
    src/core/texture.cpp
-   src/singletons/room.cpp
+   src/singletons/scene.cpp
    src/singletons/project.cpp
-   src/singletons/process.cpp
    src/singletons/runtime.cpp
-   src/singletons/interpreter.cpp
    src/singletons/renderer.cpp
+   src/singletons/timestamp.cpp
+   src/singletons/interpreter.cpp
+   src/singletons/environment.cpp
    src/interfaces/disposable.cpp
    src/interfaces/renderable.cpp
    src/utils/path.cpp
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
-   src/resources/font_loader.cpp
    src/resources/font_manager.cpp
-   src/resources/texture_loader.cpp
    src/resources/texture_manager.cpp
 )
 
@@ -71,14 +71,20 @@ add_custom_command(
       $<TARGET_FILE_DIR:LunarEngine>/fonts/Arial.ttf
 
    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_SOURCE_DIR}/assets/.ruby-version
+      $<TARGET_FILE_DIR:LunarEngine>/.ruby-version
+
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
       ${CMAKE_SOURCE_DIR}/assets/game.cfg
       $<TARGET_FILE_DIR:LunarEngine>/game.cfg
 )
 
 target_link_libraries(LunarEngine
    PRIVATE
-      SFML::Graphics
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/lib/libmruby.lib
+      SDL3::SDL3
+      SDL3_ttf::SDL3_ttf
+      SDL3_image::SDL3_image
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/build/host/lib/libmruby.lib
       ws2_32
       iphlpapi
 )
@@ -86,8 +92,8 @@ target_link_libraries(LunarEngine
 target_include_directories(LunarEngine
    PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libs/mruby/build/host/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mruby/build/host/include
 )
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT LunarEngine)

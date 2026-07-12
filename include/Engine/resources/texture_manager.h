@@ -1,18 +1,24 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3_image/SDL_image.h>
 #include <map>
 #include <string>
 #include <filesystem>
+#include <Engine/interfaces/disposable.h>
 
-class TextureManager
+class TextureManager : public Disposable
 {
 public:
-   const sf::Texture& get(const std::string& key);
-   void add(const std::string& key, std::filesystem::path value);
-   void remove(const std::string& key);
+   TextureManager();
+   ~TextureManager();
+   TextureManager(const TextureManager&) = delete;
+   TextureManager& operator=(const TextureManager&) = delete;
+   const SDL_Texture* get(const std::string& key);
+
+protected:
+   void on_dispose() override;
 
 private:
-   std::map<std::string, sf::Texture> textures;
-   std::map<std::string, std::filesystem::path> paths;
+   std::map<std::string, SDL_Texture*> texture_files;
+   std::map<std::string, std::filesystem::path> texture_paths;
 };

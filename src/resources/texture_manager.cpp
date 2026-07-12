@@ -1,38 +1,69 @@
 #include <Engine/resources/texture_manager.h>
 
-const sf::Texture& TextureManager::get(const std::string& key)
+#include <iostream>
+#include <Engine/utils/path.h>
+#include <Engine/singletons/runtime.h>
+
+namespace Path = Engine::Path;
+
+TextureManager::TextureManager()
 {
-   if (auto it = textures.find(key); it != textures.end()) {
+   auto basepath = Path::get_executable_dir() / "graphics";
+
+   if (!std::filesystem::exists(basepath))
+   {
+      std::cerr << "[TextureManager]: Path does not exist -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   if (!std::filesystem::is_directory(basepath))
+   {
+      std::cerr << "[TextureManager]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   for (const auto& entry : std::filesystem::recursive_directory_iterator(basepath))
+   {
+      if (entry.is_regular_file()) {
+         auto key = std::filesystem::relative(entry.path(), basepath).string();
+         auto value = entry.path();
+         texture_paths.emplace(key, value);
+      }
+   }
+}
+
+TextureManager::~TextureManager()
+{
+   dispose();
+}
+
+const SDL_Texture* TextureManager::get(const std::string& key)
+{
+   if (auto it = texture_files.find(key); it != texture_files.end()) {
       return it->second;
    }
 
-   auto path = paths.find(key);
+   auto path = texture_paths.find(key);
 
-   if (path == paths.end()) {
-      throw std::runtime_error("[Texture]: Texture not found: " + key);
+   if (path == texture_paths.end()) {
+      throw std::runtime_error("[Texture]: Texture not found -> \"" + key + "\"");
    }
 
-   sf::Texture texture;
+   SDL_Texture* texture = IMG_LoadTexture(Runtime::get_renderer(), path->second.string().c_str());
 
-   if (texture.loadFromFile(path->second)) {
-      texture.setSmooth(false);
-      texture.setRepeated(false);
-      auto [it, _] = textures.emplace(key, std::move(texture));
+   if (texture != NULL) {
+      auto [it, inserted] = texture_files.emplace(key, texture);
       return it->second;
    }
 
    throw std::runtime_error("[Texture]: Failed to load " + path->second.string());
 }
 
-void TextureManager::add(const std::string& key, std::filesystem::path value)
+void TextureManager::on_dispose()
 {
-   paths.emplace(key, value);
-}
-
-void TextureManager::remove(const std::string& key)
-{
-   paths.erase(key);
-   if (textures.find(key) != textures.end()) {
-      textures.erase(key);
+   for (auto& [_, texture] : texture_files) {
+      if (texture != nullptr) {
+         SDL_DestroyTexture(texture);
+      }
    }
 }

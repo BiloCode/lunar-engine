@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Engine/core/texture.h>
-#include <Engine/resources/texture_manager.h>
+class TextureManager;
 
 namespace ruby
 {

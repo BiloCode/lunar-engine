@@ -1,4 +1,7 @@
 #include <Engine/bindings/r_texture.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace

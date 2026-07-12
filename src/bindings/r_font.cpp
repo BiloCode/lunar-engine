@@ -1,8 +1,12 @@
 #include <Engine/bindings/r_font.h>
-#include <Engine/bindings/r_types.h>
-#include <Engine/singletons/interpreter.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
 #include <cstring>
 #include <iostream>
+#include <Engine/core/font.h>
+#include <Engine/bindings/r_types.h>
+#include <Engine/singletons/interpreter.h>
 
 namespace
 {
@@ -18,9 +22,9 @@ namespace
       mrb_get_args(mrb, "z", &text);
       auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, self, &r_font_type));
       auto vector = new Vector(font->get_text_size(text));
-      auto vector_class = mrb_class_get(mrb, "Vector2f");
+      auto vector_class = mrb_class_get(mrb, "Vector2i");
       return mrb_obj_value(
-         mrb_data_object_alloc(mrb, vector_class, vector, &r_vector2f_type)
+         mrb_data_object_alloc(mrb, vector_class, vector, &r_vector2i_type)
       );
    }
 
@@ -33,9 +37,9 @@ namespace
       }
       auto font = static_cast<Font*>(mrb_data_get_ptr(mrb, self, &r_font_type));
       auto vector = new Vector(font->get_character_size(c[0]));
-      auto vector_class = mrb_class_get(mrb, "Vector2f");
+      auto vector_class = mrb_class_get(mrb, "Vector2i");
       return mrb_obj_value(
-         mrb_data_object_alloc(mrb, vector_class, vector, &r_vector2f_type)
+         mrb_data_object_alloc(mrb, vector_class, vector, &r_vector2i_type)
       );
    }
 }

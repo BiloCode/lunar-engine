@@ -1,4 +1,7 @@
 #include "interpreter.h"
+
+#include <mruby.h>
+#include <mruby/string.h>
 #include <iostream>
 
 template<typename T>

@@ -1,4 +1,10 @@
 #include <Engine/bindings/r_textures.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
+#include <mruby/variable.h>
+#include <Engine/core/texture.h>
+#include <Engine/resources/texture_manager.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>
 

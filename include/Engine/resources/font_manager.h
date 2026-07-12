@@ -1,20 +1,24 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <map>
 #include <string>
-#include <vector>
 #include <filesystem>
+#include <Engine/interfaces/disposable.h>
 
-class FontManager
+class FontManager : public Disposable
 {
 public:
-   const sf::Font& back();
-   const sf::Font& front();
-   const sf::Font& get(const std::string& key);
-   void add(const std::string& key, std::filesystem::path value);
+    FontManager();
+    ~FontManager();
+    FontManager(const FontManager&) = delete;
+    FontManager& operator=(const FontManager&) = delete;
+    const TTF_Font* get(const std::string& key);
+
+protected:
+    void on_dispose() override;
 
 private:
-   std::map<std::string, sf::Font> fonts;
-   std::map<std::string, std::filesystem::path> paths;
+    std::map<std::string, TTF_Font*> font_files;
+    std::map<std::string, std::filesystem::path> font_paths;
 };

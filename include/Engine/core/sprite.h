@@ -1,15 +1,16 @@
 #pragma once
 
 #include <Engine/interfaces/renderable.h>
-#include "bitmap.h"
+
+class Bitmap;
 
 class Sprite : public Renderable
 {
 public:
-   Bitmap* bitmap = nullptr;
+   Bitmap* bitmap;
    Sprite();
    ~Sprite() override;
-   void draw(sf::RenderTarget& target) override;
+   void draw() override;
 
 protected:
    void on_dispose() override;

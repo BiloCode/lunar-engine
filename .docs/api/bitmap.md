@@ -18,6 +18,7 @@ Bitmap.new(width, height)
 |---|---|---|
 | `width` | `Integer` | read-only |
 | `height` | `Integer` | read-only |
+| `font` / `font=` | `Font` or `nil` | read-write |
 
 ## Methods
 
@@ -29,7 +30,7 @@ Bitmap.new(width, height)
 | [`dispose`](#dispose) | `nil` |
 | [`disposed?`](#disposed) | `Boolean` |
 | [`draw_text`](#draw_text) | `nil` |
-| [`draw_texture`](#draw_texture) | `nil` |
+| [`draw_rect`](#draw_rect) | `nil` |
 
 ---
 
@@ -79,7 +80,9 @@ Returns `true` if the bitmap has been disposed.
 ### draw_text
 
 ```ruby
-bitmap.draw_text(x, y, w, h, text, font[, color[, align]])
+bitmap.draw_text(x, y, width, height, text)
+bitmap.draw_text(x, y, width, height, text, color)
+bitmap.draw_text(x, y, width, height, text, color, align)
 ```
 
 Renders text on the bitmap within the specified area.
@@ -89,18 +92,22 @@ Renders text on the bitmap within the specified area.
 - `width` — `Float` — text area width
 - `height` — `Float` — text area height
 - `text` — `String`
-- `font` — `Font`
 - `color` — `Color` (optional) — text color
 - `align` — `Integer` (optional) — text alignment
 
-### draw_texture
+### draw_rect
 
 ```ruby
-bitmap.draw_texture(x, y, texture)
+bitmap.draw_rect(x, y, width, height)
+bitmap.draw_rect(x, y, width, height, color)
+bitmap.draw_rect(x, y, width, height, color, align)
 ```
 
-Renders a texture onto the bitmap at the given position.
+Draws a rectangle outline on the bitmap within the specified area.
 
-- `x` — `Float` — x position
-- `y` — `Float` — y position
-- `texture` — `Texture` — the texture to draw
+- `x` — `Float` — rectangle area position
+- `y` — `Float` — rectangle area position
+- `width` — `Float` — rectangle area width
+- `height` — `Float` — rectangle area height
+- `color` — `Color` (optional) — rectangle color
+- `align` — `Integer` (optional) — rectangle alignment

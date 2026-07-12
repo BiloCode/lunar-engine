@@ -1,10 +1,10 @@
 #include <Engine/core/texture.h>
 
-Texture::Texture(const sf::Texture& texture) : sf_texture(&texture)
+Texture::Texture(const SDL_Texture* texture) : texture(texture)
 {
 }
 
-Texture::operator const sf::Texture &() const
+Texture::operator const SDL_Texture*() const
 {
-   return *sf_texture;
+   return texture;
 }

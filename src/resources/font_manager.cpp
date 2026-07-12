@@ -1,42 +1,85 @@
 #include <Engine/resources/font_manager.h>
 
-const sf::Font& FontManager::back()
+#include <iostream>
+#include <Engine/utils/path.h>
+
+namespace Path = Engine::Path;
+
+FontManager::FontManager()
 {
-   return get(paths.end()->first);
+   if (!TTF_Init()) {
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   std::string basepath = (Path::get_executable_dir() / "fonts").string();
+   std::string extensions[3] = { ".ttf", ".otf", ".cff" };
+
+   if (!std::filesystem::exists(basepath))
+   {
+      std::cerr << "[FontManager]: Path does not exist -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   if (!std::filesystem::is_directory(basepath))
+   {
+      std::cerr << "[FontManager]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
+      return;
+   }
+
+   for (const auto& entry : std::filesystem::directory_iterator(basepath))
+   {
+      if (!entry.is_regular_file())
+      {
+         continue;
+      }
+
+      for (const std::string& extension : extensions)
+      {
+         if (entry.path().extension().string() == extension)
+         {
+            auto key = std::filesystem::relative(entry.path(), basepath).string();
+            auto value = entry.path();
+            font_paths.emplace(key, value);
+            break;
+         }
+      }
+   }
 }
 
-const sf::Font& FontManager::front()
+FontManager::~FontManager()
 {
-   return get(paths.begin()->first);
+   dispose();
 }
 
-const sf::Font& FontManager::get(const std::string& key)
+const TTF_Font* FontManager::get(const std::string& key)
 {
-   if (auto it = fonts.find(key); it != fonts.end()) {
+   if (auto it = font_files.find(key); it != font_files.end()) {
+   return it->second;
+   }
+
+   auto path = font_paths.find(key);
+
+   if (path == font_paths.end()) {
+      throw std::runtime_error("[Fonts]: Font not found -> \"" + key + "\"");
+   }
+
+   TTF_Font* font = TTF_OpenFont(path->second.string().c_str(), 16);
+
+   if (font != nullptr) {
+      auto [it, inserted] = font_files.emplace(key, font);
       return it->second;
    }
 
-   auto path = paths.find(key);
-
-   if (path == paths.end()) {
-      throw std::runtime_error("[Fonts]: Missing font resource '" + key + "'");
-   }
-
-   sf::Font font;
-
-   if (!font.openFromFile(path->second)) {
-      throw std::runtime_error("[Fonts]: Failed to load " + path->second.string());
-   }
-
-   auto [it, inserted] = fonts.emplace(key, std::move(font));
-   return it->second;
+   throw std::runtime_error("[Fonts]: Failed to load " + path->second.string());
 }
 
-void FontManager::add(const std::string& key, std::filesystem::path value)
+void FontManager::on_dispose()
 {
-   auto [it, inserted] = paths.emplace(key, value);
-
-   if (!inserted) {
-      throw std::runtime_error("[Fonts]: Duplicate key '" + key + "'");
+   for (auto& [_, font] : font_files) {
+      if (font != nullptr) {
+         TTF_CloseFont(font);
+      }
    }
+
+   TTF_Quit();
 }

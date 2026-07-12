@@ -1,41 +1,31 @@
 #include <Engine/core/font.h>
+#include <iostream>
 
-Font::Font(const sf::Font& font) : sf_font(&font), sf_font_size(16u)
+Font::Font(const TTF_Font* font) : font(const_cast<TTF_Font*>(font))
 {
 }
 
-Font::Font(const sf::Font& font, unsigned int font_size) : sf_font(&font), sf_font_size(font_size)
+TTF_Font* Font::c_sdl() const
 {
+   return font;
 }
 
-Font::operator const sf::Font&() const
+const Vector<int> Font::get_text_size(const std::string& text) const
 {
-   return *sf_font;
-}
+   int w = 0;
+   int h = 0;
 
-unsigned int Font::get_font_size() const
-{
-   return sf_font_size;
-}
-
-const Vector<float> Font::get_text_size(const std::string& text) const
-{
-   auto sf_text = sf::Text(*sf_font, sf::String::fromUtf8(text.begin(), text.end()), sf_font_size);
-   auto sf_text_bounds = sf_text.getLocalBounds();
+   if (TTF_GetStringSize(font, text.c_str(), text.size(), &w, &h)) {
+      throw std::runtime_error(SDL_GetError());
+   }
 
    return {
-      sf_text_bounds.size.x,
-      sf_text_bounds.size.y
+      w,
+      h
    };
 }
 
-const Vector<float> Font::get_character_size(char c) const
+const Vector<int> Font::get_character_size(char c) const
 {
-   auto width = sf_font->getGlyph(c, sf_font_size, false).advance;
-   auto height = sf_font->getLineSpacing(sf_font_size);
-
-   return {
-      width,
-      height
-   };
+   return get_text_size(std::string(1, c));
 }

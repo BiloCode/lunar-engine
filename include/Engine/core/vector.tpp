@@ -1,7 +1,7 @@
 #include "vector.h"
 
 template<typename T>
-Vector<T>::Vector(T x, T y) : sf_vector(x, y)
+Vector<T>::Vector(T x, T y) : x(x), y(y)
 {
 }
 
@@ -15,32 +15,30 @@ Vector<T>::Vector(const Vector<U>& vector)
       "Vector<U>: U must be int or float."
    );
 
-   sf_vector = sf::Vector2(
-      static_cast<T>(vector.get_x()),
-      static_cast<T>(vector.get_y())
-   );
+   x = static_cast<T>(vector.get_x());
+   y = static_cast<T>(vector.get_y());
 }
 
 template <typename T>
 T Vector<T>::get_x() const
 {
-   return sf_vector.x;
+   return x;
 }
 
 template <typename T>
 T Vector<T>::get_y() const
 {
-   return sf_vector.y;
+   return y;
 }
 
 template <typename T>
 void Vector<T>::set_x(T value)
 {
-   sf_vector.x = value;
+   x = value;
 }
 
 template <typename T>
 void Vector<T>::set_y(T value)
 {
-   sf_vector.y = value;
+   y = value;
 }
