@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <SDL3/SDL.h>
 
 class Color
 {
@@ -9,6 +10,7 @@ public:
    Color(const Color& color);
    Color(unsigned int r, unsigned int g, unsigned int b);
    Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a);
+   SDL_Color c_sdl() const;
    static const Color Transparent;
    static const Color Black;
    static const Color White;

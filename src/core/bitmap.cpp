@@ -1,6 +1,7 @@
 #include <Engine/core/bitmap.h>
-#include <Engine/singletons/runtime.h>
+
 #include <iostream>
+#include <Engine/singletons/runtime.h>
 
 Bitmap::Bitmap() : width(1u), height(1u), texture_dirty(true), texture_invalid(true)
 {
@@ -29,7 +30,8 @@ int Bitmap::get_height() const
 
 SDL_Texture* Bitmap::get_texture()
 {
-   if (texture_invalid) {
+   if (texture_invalid)
+   {
       texture = SDL_CreateTexture(Runtime::get_renderer(), 
          SDL_PIXELFORMAT_RGBA32,
          SDL_TEXTUREACCESS_STREAMING,
@@ -44,12 +46,22 @@ SDL_Texture* Bitmap::get_texture()
       texture_invalid = false;
    }
 
-   if (texture_dirty) {
-      SDL_UpdateTexture(texture, nullptr, surface->pixels, surface->pitch);
+   if (texture_dirty)
+   {
+      if (!SDL_UpdateTexture(texture, nullptr, surface->pixels, surface->pitch)) {
+         throw std::runtime_error(SDL_GetError());
+      }
+
       texture_dirty = false;
    }
 
    return texture;
+}
+
+void Bitmap::debug()
+{
+   if (is_invalid()) return;
+   draw_rect(1, 1, this->width - 2, this->height - 2, Color::Red);
 }
 
 void Bitmap::clear()
@@ -115,13 +127,26 @@ void Bitmap::draw_rect(int x, int y, int width, int height, const Color& color, 
 void Bitmap::draw_text(int x, int y, int width, int height, const std::string& text, const Color& color, int align)
 {
    if (is_invalid()) return;
-   texture_dirty = true;
-}
 
-void Bitmap::draw_limits()
-{
-   if (is_invalid()) return;
-   draw_rect(1, 1, this->width - 2, this->height - 2, Color::Red);
+   auto* text_surface = TTF_RenderText_Blended(font->c_sdl(), text.c_str(), text.size(), color.c_sdl());
+
+   if (text_surface == nullptr) {
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   SDL_Rect dst;
+   dst.x = x;
+   dst.y = y;
+   dst.w = text_surface->w;
+   dst.h = text_surface->h;
+
+   if (!SDL_BlitSurface(text_surface, nullptr, surface, &dst)) {
+      throw std::runtime_error(SDL_GetError());
+   }
+
+   SDL_DestroySurface(text_surface);
+
+   texture_dirty = true;
 }
 
 void Bitmap::on_dispose()

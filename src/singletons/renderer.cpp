@@ -31,7 +31,8 @@ void Renderer::refresh()
 
 void Renderer::draw()
 {
-   for (auto* element : elements) {
+   for (auto* element : elements)
+   {
       if (element->is_valid() && element->is_visible()) {
          element->draw();
       }

@@ -4,12 +4,22 @@ Color::Color(const Color& color) : r(color.r), g(color.g), b(color.b), a(color.a
 {
 }
 
-Color::Color(unsigned int r, unsigned int g, unsigned int b) : r(r), g(g), b(b)
+Color::Color(unsigned int r, unsigned int g, unsigned int b) : r(r), g(g), b(b), a(255u)
 {
 }
 
 Color::Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a) : r(r), g(g), b(b), a(a)
 {
+}
+
+SDL_Color Color::c_sdl() const
+{
+    SDL_Color color;
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    color.a = a;
+    return color;
 }
 
 const Color Color::Transparent(0, 0, 0, 0);

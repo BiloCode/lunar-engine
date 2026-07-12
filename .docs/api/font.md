@@ -14,8 +14,8 @@ Raises `RuntimeError`. Fonts are created through the `Fonts` module.
 
 | Method | Returns |
 |---|---|
-| [`t_size`](#t_size) | `Vector2f` |
-| [`c_size`](#c_size) | `Vector2f` |
+| [`t_size`](#t_size) | `Vector2i` |
+| [`c_size`](#c_size) | `Vector2i` |
 
 ---
 
@@ -25,7 +25,7 @@ Raises `RuntimeError`. Fonts are created through the `Fonts` module.
 font.t_size(text)
 ```
 
-Returns the pixel dimensions of the given string as a `Vector2f`.
+Returns the pixel dimensions of the given string as a `Vector2i`.
 
 - `text` — `String` — the text to measure
 

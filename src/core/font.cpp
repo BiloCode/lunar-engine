@@ -5,7 +5,7 @@ Font::Font(const TTF_Font* font) : font(const_cast<TTF_Font*>(font))
 {
 }
 
-Font::operator const TTF_Font*() const
+TTF_Font* Font::c_sdl() const
 {
    return font;
 }

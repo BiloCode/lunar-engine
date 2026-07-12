@@ -15,11 +15,11 @@ public:
    int get_width() const;
    int get_height() const;
    SDL_Texture* get_texture();
+   void debug();
    void clear();
    void resize(int width, int height);
-   void draw_rect(int x, int y, int width, int height, const Color& color, int thickness = 1);
+   void draw_rect(int x, int y, int width, int height, const Color& color = Color::Red, int thickness = 1);
    void draw_text(int x, int y, int width, int height, const std::string& text, const Color& color = Color::Black, int align = 0);
-   void draw_limits();
 
 protected:
    void on_dispose() override;

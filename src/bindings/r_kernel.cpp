@@ -7,17 +7,17 @@ namespace
 {
    mrb_value cpp_set_scene(mrb_state* mrb, mrb_value self)
    {
-      mrb_value room;
-      mrb_value room_prev = Scene::get_current();
-      mrb_get_args(mrb, "o", &room);
-      if (!mrb_nil_p(room_prev)) {
-         mrb_funcall(mrb, room_prev, "exit_tree", 0);
-         mrb_gc_unregister(mrb, room_prev);
+      mrb_value scene;
+      mrb_value scene_prev = Scene::get_current();
+      mrb_get_args(mrb, "o", &scene);
+      if (!mrb_nil_p(scene_prev)) {
+         mrb_funcall(mrb, scene_prev, "exit_tree", 0);
+         mrb_gc_unregister(mrb, scene_prev);
          if (mrb->exc) {
             mrb_raise(mrb, E_RUNTIME_ERROR, "exit_tree error");
          }
       }
-      Scene::set_current(room);
+      Scene::set_current(scene);
       mrb_gc_register(mrb, Scene::get_current());
       mrb_funcall(mrb, Scene::get_current(), "enter_tree", 0);
       if (mrb->exc) {

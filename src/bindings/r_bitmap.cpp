@@ -69,6 +69,14 @@ namespace
       bitmap->font = font;
       bitmap_fonts[bitmap] = obj;
       mrb_gc_register(mrb, obj);
+
+      return mrb_nil_value();
+   }
+
+   mrb_value bitmap_debug(mrb_state* mrb, mrb_value self)
+   {
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      bitmap->debug();
       return mrb_nil_value();
    }
 
@@ -106,9 +114,9 @@ namespace
       const char* text;
       mrb_int align;
       mrb_float x, y, width, height;
-      mrb_value v_color;
+      mrb_value color_v;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffffz|oi", &x, &y, &width, &height, &text, &v_color, &align);
+      mrb_int args_c = mrb_get_args(mrb, "ffffz|oi", &x, &y, &width, &height, &text, &color_v, &align);
 
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
@@ -116,11 +124,11 @@ namespace
          bitmap->draw_text(x, y, width, height, text);
       }
       else if (args_c == 6) {
-         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, color_v, &r_color_type));
          bitmap->draw_text(x, y, width, height, text, *color);
       }
       else if (args_c == 7) {
-         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, v_color, &r_color_type));
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, color_v, &r_color_type));
          bitmap->draw_text(x, y, width, height, text, *color, align);
       }
       else {
@@ -130,10 +138,31 @@ namespace
       return mrb_nil_value();
    }
 
-   mrb_value bitmap_draw_limits(mrb_state* mrb, mrb_value self)
+   mrb_value bitmap_draw_rect(mrb_state* mrb, mrb_value self)
    {
+      mrb_int align;
+      mrb_value color_v;
+      mrb_float x, y, width, height;
+
+      mrb_int args_c = mrb_get_args(mrb, "ffff|oi", &x, &y, &width, &height, &color_v, &align);
+
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-      bitmap->draw_limits();
+
+      if (args_c == 4) {
+         bitmap->draw_rect(x, y, width, height);
+      }
+      else if (args_c == 5) {
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, color_v, &r_color_type));
+         bitmap->draw_rect(x, y, width, height, *color);
+      }
+      else if (args_c == 6) {
+         auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, color_v, &r_color_type));
+         bitmap->draw_rect(x, y, width, height, *color, align);
+      }
+      else {
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+      }
+
       return mrb_nil_value();
    }
 }
@@ -147,10 +176,11 @@ void ruby::bind_bitmap()
    Interpreter::bind_instance_method(ref, "height", bitmap_height, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "font", bitmap_font, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "font=", bitmap_font_set, MRB_ARGS_REQ(1));
+   Interpreter::bind_instance_method(ref, "debug", bitmap_debug, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "clear", bitmap_clear, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "resize", bitmap_resize, MRB_ARGS_REQ(2));
    Interpreter::bind_instance_method(ref, "dispose", bitmap_dispose, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(5, 2));
-   Interpreter::bind_instance_method(ref, "draw_limits", bitmap_draw_limits, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "draw_rect", bitmap_draw_rect, MRB_ARGS_ARG(4, 2));
 }

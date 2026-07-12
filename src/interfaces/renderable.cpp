@@ -1,4 +1,5 @@
 #include <Engine/interfaces/renderable.h>
+
 #include <Engine/singletons/renderer.h>
 
 float Renderable::get_x() const

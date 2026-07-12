@@ -59,8 +59,15 @@ const mrb_data_type r_bitmap_type = {
 
 const mrb_data_type r_sprite_type = {
    "Sprite",
-   [](mrb_state*, void* ptr) {
-      delete static_cast<Sprite*>(ptr);
+   [](mrb_state* mrb, void* ptr) {
+      auto* sprite = static_cast<Sprite*>(ptr);
+
+      if (auto it = sprite_bitmaps.find(sprite); it != sprite_bitmaps.end()) {
+         mrb_gc_unregister(mrb, it->second);
+         sprite_bitmaps.erase(it);
+      }
+
+      delete sprite;
    }
 };
 
