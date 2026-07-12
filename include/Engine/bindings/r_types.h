@@ -2,7 +2,6 @@
 
 #include <mruby.h>
 #include <mruby/data.h>
-#include <mruby/compile.h>
 
 extern const mrb_data_type r_font_type;
 extern const mrb_data_type r_fonts_type;

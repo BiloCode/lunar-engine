@@ -1,4 +1,8 @@
 #include <Engine/bindings/r_color.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
+#include <Engine/core/color.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>
 

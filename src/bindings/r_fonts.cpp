@@ -1,5 +1,10 @@
 #include <Engine/bindings/r_fonts.h>
+
+#include <mruby.h>
+#include <mruby/variable.h>
+#include <Engine/core/font.h>
 #include <Engine/bindings/r_types.h>
+#include <Engine/resources/font_manager.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace

@@ -1,11 +1,10 @@
 #pragma once
 
 #include <SDL3_ttf/SDL_ttf.h>
-#include <Engine/interfaces/disposable.h>
 #include <map>
 #include <string>
-#include <iostream>
 #include <filesystem>
+#include <Engine/interfaces/disposable.h>
 
 class FontManager : public Disposable
 {

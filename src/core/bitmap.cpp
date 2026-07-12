@@ -27,11 +27,6 @@ int Bitmap::get_height() const
    return height;
 }
 
-Font* Bitmap::get_font() const
-{
-   return font;
-}
-
 SDL_Texture* Bitmap::get_texture()
 {
    if (texture_invalid) {
@@ -55,11 +50,6 @@ SDL_Texture* Bitmap::get_texture()
    }
 
    return texture;
-}
-
-void Bitmap::set_font(Font* font)
-{
-   this->font = font;
 }
 
 void Bitmap::clear()

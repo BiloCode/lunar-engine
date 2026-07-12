@@ -1,5 +1,10 @@
 #include <Engine/bindings/r_bitmap.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
+#include <Engine/core/bitmap.h>
 #include <Engine/bindings/r_types.h>
+#include <Engine/bindings/r_values.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace
@@ -39,20 +44,31 @@ namespace
 
    mrb_value bitmap_font(mrb_state* mrb, mrb_value self)
    {
-      auto* klass = mrb_class_get(mrb, "Font");
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-      return mrb_obj_value(
-         mrb_data_object_alloc(mrb, klass, bitmap->get_font(), &r_font_type)
-      );
+
+      if (auto it = bitmap_fonts.find(bitmap); it != bitmap_fonts.end()) {
+         return it->second;
+      }
+
+      return mrb_nil_value();
    }
 
    mrb_value bitmap_font_set(mrb_state* mrb, mrb_value self)
    {
       mrb_value obj;
       mrb_get_args(mrb, "o", &obj);
+
       auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, obj, &r_font_type));
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
-      bitmap->set_font(font);
+
+      if (auto it = bitmap_fonts.find(bitmap); it != bitmap_fonts.end()) {
+         mrb_gc_unregister(mrb, it->second);
+         bitmap_fonts.erase(it);
+      }
+
+      bitmap->font = font;
+      bitmap_fonts[bitmap] = obj;
+      mrb_gc_register(mrb, obj);
       return mrb_nil_value();
    }
 
@@ -90,11 +106,10 @@ namespace
       const char* text;
       mrb_int align;
       mrb_float x, y, width, height;
-      mrb_value v_font, v_color;
+      mrb_value v_color;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffffzo|oi", &x, &y, &width, &height, &text, &v_font, &v_color, &align);
+      mrb_int args_c = mrb_get_args(mrb, "ffffz|oi", &x, &y, &width, &height, &text, &v_color, &align);
 
-      auto* font = static_cast<Font*>(mrb_data_get_ptr(mrb, v_font, &r_font_type));
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
       if (args_c == 5) {

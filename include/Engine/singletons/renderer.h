@@ -1,7 +1,8 @@
 #pragma once
 
-#include <Engine/interfaces/renderable.h>
 #include <vector>
+
+class Renderable;
 
 class Renderer
 {

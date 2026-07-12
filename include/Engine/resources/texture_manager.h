@@ -1,12 +1,10 @@
 #pragma once
 
-#include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include <Engine/interfaces/disposable.h>
 #include <map>
 #include <string>
-#include <iostream>
 #include <filesystem>
+#include <Engine/interfaces/disposable.h>
 
 class TextureManager : public Disposable
 {

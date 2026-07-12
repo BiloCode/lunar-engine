@@ -19,6 +19,7 @@ add_subdirectory(third_party/SDL_image EXCLUDE_FROM_ALL)
 add_executable(LunarEngine
    src/main.cpp
    src/bindings/r_types.cpp
+   src/bindings/r_values.cpp
    src/bindings/r_font.cpp
    src/bindings/r_fonts.cpp
    src/bindings/r_color.cpp

@@ -1,7 +1,10 @@
 #include <Engine/bindings/r_sprite.h>
-#include <Engine/bindings/r_types.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
+#include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace

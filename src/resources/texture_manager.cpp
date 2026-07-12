@@ -1,6 +1,8 @@
 #include <Engine/resources/texture_manager.h>
-#include <Engine/singletons/runtime.h>
+
+#include <iostream>
 #include <Engine/utils/path.h>
+#include <Engine/singletons/runtime.h>
 
 namespace Path = Engine::Path;
 

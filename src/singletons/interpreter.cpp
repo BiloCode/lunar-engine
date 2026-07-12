@@ -1,5 +1,10 @@
 #include <Engine/singletons/interpreter.h>
 #include <Engine/utils/path.h>
+#include <mruby/data.h>
+#include <mruby/class.h>
+#include <mruby/string.h>
+#include <mruby/compile.h>
+#include <mruby/variable.h>
 #include <fstream>
 #include <iostream>
 

@@ -1,5 +1,7 @@
 #include <Engine/singletons/renderer.h>
+
 #include <algorithm>
+#include <Engine/interfaces/renderable.h>
 
 void Renderer::attach(Renderable* element)
 {

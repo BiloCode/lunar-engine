@@ -1,6 +1,10 @@
 #include <Engine/bindings/r_vector_int.h>
-#include <Engine/bindings/r_types.h>
+
+#include <mruby.h>
+#include <mruby/class.h>
+#include <Engine/core/vector.h>
 #include <Engine/utils/string.h>
+#include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>
 
 namespace String = Engine::String;

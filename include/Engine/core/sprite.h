@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Engine/interfaces/renderable.h>
-#include "bitmap.h"
+
+class Bitmap;
 
 class Sprite : public Renderable
 {

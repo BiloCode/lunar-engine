@@ -11,11 +11,10 @@ public:
    Bitmap();
    Bitmap(int width, int height);
    ~Bitmap() override;
+   Font* font;
    int get_width() const;
    int get_height() const;
-   Font* get_font() const;
    SDL_Texture* get_texture();
-   void set_font(Font* font);
    void clear();
    void resize(int width, int height);
    void draw_rect(int x, int y, int width, int height, const Color& color, int thickness = 1);
@@ -26,7 +25,6 @@ protected:
    void on_dispose() override;
 
 private:
-   Font* font;
    SDL_Surface* surface;
    SDL_Texture* texture;
    int width;

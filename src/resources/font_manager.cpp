@@ -1,4 +1,6 @@
 #include <Engine/resources/font_manager.h>
+
+#include <iostream>
 #include <Engine/utils/path.h>
 
 namespace Path = Engine::Path;
