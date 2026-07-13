@@ -1,9 +1,11 @@
 #pragma once
 
 #include <Engine/interfaces/disposable.h>
-#include "font.h"
+#include "rect.h"
 #include "color.h"
-#include "texture.h"
+#include "image.h"
+
+class Font;
 
 class Bitmap : public Disposable
 {
@@ -20,6 +22,8 @@ public:
    void resize(int width, int height);
    void draw_rect(int x, int y, int width, int height, const Color& color = Color::Red, int thickness = 1);
    void draw_text(int x, int y, int width, int height, const std::string& text, const Color& color = Color::Black, int align = 0);
+   void draw_texture(const Image& image, int x, int y);
+   void draw_texture_region(const Image& image, int x, int y, const Rect<int>& bounds);
 
 protected:
    void on_dispose() override;

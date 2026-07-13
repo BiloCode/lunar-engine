@@ -30,9 +30,10 @@ The engine initializes the C++ core first, then boots the mruby VM. Ruby scripts
 
 ```ruby
 # Load a font and create a bitmap with text
-font = Fonts.get("arial.ttf", 24)
+font = Fonts.load("arial.ttf")
 bitmap = Bitmap.new(320, 80)
-bitmap.draw_text(10, 10, 300, 60, "Hello, Lunar Engine!", font)
+bitmap.font = font
+bitmap.draw_text(10, 10, 300, 60, "Hello, Lunar Engine!")
 
 # Create a sprite and assign the bitmap
 sprite = Sprite.new

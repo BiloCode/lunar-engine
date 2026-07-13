@@ -2,5 +2,5 @@
 
 namespace ruby
 {
-   void bind_texture();
+   void bind_rect_int();
 }

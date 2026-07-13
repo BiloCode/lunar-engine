@@ -13,7 +13,7 @@ public:
     ~FontManager();
     FontManager(const FontManager&) = delete;
     FontManager& operator=(const FontManager&) = delete;
-    const TTF_Font* get(const std::string& key);
+    TTF_Font* load(const std::string& key);
 
 protected:
     void on_dispose() override;

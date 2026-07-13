@@ -1,9 +1,10 @@
 #include <Engine/resources/font_manager.h>
 
-#include <iostream>
 #include <Engine/utils/path.h>
+#include <Engine/utils/debug.h>
 
 namespace Path = Engine::Path;
+namespace Debug = Engine::Debug;
 
 FontManager::FontManager()
 {
@@ -16,13 +17,13 @@ FontManager::FontManager()
 
    if (!std::filesystem::exists(basepath))
    {
-      std::cerr << "[FontManager]: Path does not exist -> \"" << basepath << "\"" << std::endl;
+      Debug::print_error("[FontManager]: Path does not exist -> \"", basepath, "\"");
       return;
    }
 
    if (!std::filesystem::is_directory(basepath))
    {
-      std::cerr << "[FontManager]: Path is not a directory -> \"" << basepath << "\"" << std::endl;
+      Debug::print_error("[FontManager]: Path is not a directory -> \"", basepath, "\"");
       return;
    }
 
@@ -37,7 +38,7 @@ FontManager::FontManager()
       {
          if (entry.path().extension().string() == extension)
          {
-            auto key = std::filesystem::relative(entry.path(), basepath).string();
+            auto key = std::filesystem::relative(entry.path(), basepath).generic_string();
             auto value = entry.path();
             font_paths.emplace(key, value);
             break;
@@ -51,7 +52,7 @@ FontManager::~FontManager()
    dispose();
 }
 
-const TTF_Font* FontManager::get(const std::string& key)
+TTF_Font* FontManager::load(const std::string& key)
 {
    if (auto it = font_files.find(key); it != font_files.end()) {
    return it->second;

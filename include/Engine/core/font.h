@@ -7,7 +7,7 @@
 class Font
 {
 public:
-    Font(const TTF_Font* font);
+    Font(TTF_Font* font);
     TTF_Font* c_sdl() const;
     const Vector<int> get_text_size(const std::string& text) const;
     const Vector<int> get_character_size(char c) const;

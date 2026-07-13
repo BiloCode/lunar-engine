@@ -11,6 +11,7 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
+   Renderer::detach(this);
    dispose();
 }
 

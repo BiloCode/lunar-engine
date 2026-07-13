@@ -2,6 +2,8 @@
 
 #include <mruby.h>
 #include <mruby/class.h>
+#include <Engine/core/rect.h>
+#include <Engine/core/image.h>
 #include <Engine/core/bitmap.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/bindings/r_values.h>
@@ -24,7 +26,7 @@ namespace
          mrb_data_init(self, bitmap, &r_bitmap_type);
       }
       else {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
       return self;
@@ -112,11 +114,10 @@ namespace
    mrb_value bitmap_draw_text(mrb_state* mrb, mrb_value self)
    {
       const char* text;
-      mrb_int align;
-      mrb_float x, y, width, height;
+      mrb_int x, y, width, height, align;
       mrb_value color_v;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffffz|oi", &x, &y, &width, &height, &text, &color_v, &align);
+      mrb_int args_c = mrb_get_args(mrb, "iiiiz|oi", &x, &y, &width, &height, &text, &color_v, &align);
 
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
@@ -132,7 +133,7 @@ namespace
          bitmap->draw_text(x, y, width, height, text, *color, align);
       }
       else {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
       return mrb_nil_value();
@@ -140,11 +141,10 @@ namespace
 
    mrb_value bitmap_draw_rect(mrb_state* mrb, mrb_value self)
    {
-      mrb_int align;
+      mrb_int x, y, width, height, thickness;
       mrb_value color_v;
-      mrb_float x, y, width, height;
 
-      mrb_int args_c = mrb_get_args(mrb, "ffff|oi", &x, &y, &width, &height, &color_v, &align);
+      mrb_int args_c = mrb_get_args(mrb, "iiii|oi", &x, &y, &width, &height, &color_v, &thickness);
 
       auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
 
@@ -157,12 +157,53 @@ namespace
       }
       else if (args_c == 6) {
          auto color = static_cast<Color*>(mrb_data_get_ptr(mrb, color_v, &r_color_type));
-         bitmap->draw_rect(x, y, width, height, *color, align);
+         bitmap->draw_rect(x, y, width, height, *color, thickness);
       }
       else {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
+      return mrb_nil_value();
+   }
+
+   mrb_value bitmap_draw_texture(mrb_state* mrb, mrb_value self)
+   {
+      mrb_int x, y;
+      mrb_value image_v;
+      mrb_get_args(mrb, "oii", &image_v, &x, &y);
+
+      if (DATA_TYPE(image_v) != &r_image_type) {
+         mrb_raise(mrb, E_RUNTIME_ERROR, "Unsupported image type");
+      }
+
+      auto* image = static_cast<Image*>(mrb_data_get_ptr(mrb, image_v, &r_image_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+
+      bitmap->draw_texture(*image, x, y);
+
+      return mrb_nil_value();
+   }
+
+   mrb_value bitmap_draw_texture_region(mrb_state* mrb, mrb_value self)
+   {
+      mrb_int x, y;
+      mrb_value image_v, bounds_v;
+      mrb_get_args(mrb, "oiio", &image_v, &x, &y, &bounds_v);
+
+      if (DATA_TYPE(image_v) != &r_image_type) {
+         mrb_raise(mrb, E_RUNTIME_ERROR, "Unsupported image type");
+      }
+
+      if (DATA_TYPE(bounds_v) != &r_rect2i_type) {
+         mrb_raise(mrb, E_RUNTIME_ERROR, "Unsupported rect type");
+      }
+
+      auto* image = static_cast<Image*>(mrb_data_get_ptr(mrb, image_v, &r_image_type));
+      auto* bitmap = static_cast<Bitmap*>(mrb_data_get_ptr(mrb, self, &r_bitmap_type));
+      auto* bounds = static_cast<Rect<int>*>(mrb_data_get_ptr(mrb, bounds_v, &r_rect2i_type));
+
+      bitmap->draw_texture_region(*image, x, y, *bounds);
+      
       return mrb_nil_value();
    }
 }
@@ -183,4 +224,6 @@ void ruby::bind_bitmap()
    Interpreter::bind_instance_method(ref, "disposed?", bitmap_disposed, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "draw_text", bitmap_draw_text, MRB_ARGS_ARG(5, 2));
    Interpreter::bind_instance_method(ref, "draw_rect", bitmap_draw_rect, MRB_ARGS_ARG(4, 2));
+   Interpreter::bind_instance_method(ref, "draw_texture", bitmap_draw_texture, MRB_ARGS_REQ(3));
+   Interpreter::bind_instance_method(ref, "draw_texture_region", bitmap_draw_texture_region, MRB_ARGS_REQ(4));
 }

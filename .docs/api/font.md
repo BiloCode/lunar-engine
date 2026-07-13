@@ -1,6 +1,6 @@
 # Font
 
-Represents a typeface. **Cannot be instantiated directly** from Ruby; use `Fonts.get` instead.
+Represents a typeface. **Cannot be instantiated directly** from Ruby; use `Fonts.load` instead.
 
 ## Constructor
 

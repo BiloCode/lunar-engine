@@ -1,13 +1,15 @@
 #include <Engine/singletons/project.h>
+
+#include <fstream>
+#include <filesystem>
 #include <Engine/utils/path.h>
+#include <Engine/utils/debug.h>
 #include <Engine/utils/string.h>
 #include <Engine/utils/boolean.h>
 #include <Engine/utils/integer.h>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
 
 namespace Path = Engine::Path;
+namespace Debug = Engine::Debug;
 namespace String = Engine::String;
 namespace Boolean = Engine::Boolean;
 namespace Integer = Engine::Integer;
@@ -18,7 +20,7 @@ void Project::load()
 
    if (!std::filesystem::exists(basepath))
    {
-      std::cerr << "[Project]: Settings not found (game.cfg)" << "\n";
+      Debug::print_error("[Project]: Settings not found (game.cfg)");
       return;
    }
 

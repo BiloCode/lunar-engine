@@ -35,7 +35,7 @@ namespace
             mrb_data_init(self, n_vector, &r_vector2f_type);
          }
          else {
-            mrb_raise(mrb, E_ARGUMENT_ERROR, "unsupported type");
+            mrb_raise(mrb, E_ARGUMENT_ERROR, "Unsupported type");
          }
       }
       else if (arg_count == 2)
@@ -47,7 +47,7 @@ namespace
       }
       else
       {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
       return self;

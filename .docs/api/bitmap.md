@@ -31,6 +31,8 @@ Bitmap.new(width, height)
 | [`disposed?`](#disposed) | `Boolean` |
 | [`draw_text`](#draw_text) | `nil` |
 | [`draw_rect`](#draw_rect) | `nil` |
+| [`draw_texture`](#draw_texture) | `nil` |
+| [`draw_texture_region`](#draw_texture_region) | `nil` |
 
 ---
 
@@ -87,10 +89,10 @@ bitmap.draw_text(x, y, width, height, text, color, align)
 
 Renders text on the bitmap within the specified area.
 
-- `x` — `Float` — text area position
-- `y` — `Float` — text area position
-- `width` — `Float` — text area width
-- `height` — `Float` — text area height
+- `x` — `Integer` — text area position
+- `y` — `Integer` — text area position
+- `width` — `Integer` — text area width
+- `height` — `Integer` — text area height
 - `text` — `String`
 - `color` — `Color` (optional) — text color
 - `align` — `Integer` (optional) — text alignment
@@ -100,14 +102,39 @@ Renders text on the bitmap within the specified area.
 ```ruby
 bitmap.draw_rect(x, y, width, height)
 bitmap.draw_rect(x, y, width, height, color)
-bitmap.draw_rect(x, y, width, height, color, align)
+bitmap.draw_rect(x, y, width, height, color, thickness)
 ```
 
 Draws a rectangle outline on the bitmap within the specified area.
 
-- `x` — `Float` — rectangle area position
-- `y` — `Float` — rectangle area position
-- `width` — `Float` — rectangle area width
-- `height` — `Float` — rectangle area height
+- `x` — `Integer` — rectangle area X
+- `y` — `Integer` — rectangle area Y
+- `width` — `Integer` — rectangle width
+- `height` — `Integer` — rectangle height
 - `color` — `Color` (optional) — rectangle color
-- `align` — `Integer` (optional) — rectangle alignment
+- `thickness` — `Integer` (optional) — outline thickness
+
+### draw_texture
+
+```ruby
+bitmap.draw_texture(image, x, y)
+```
+
+Draws an image texture onto the bitmap at the specified position.
+
+- `image` — `Image` — the texture to draw
+- `x` — `Integer` — X position
+- `y` — `Integer` — Y position
+
+### draw_texture_region
+
+```ruby
+bitmap.draw_texture_region(image, x, y, bounds)
+```
+
+Draws a region of an image texture onto the bitmap.
+
+- `image` — `Image` — the texture to draw from
+- `x` — `Integer` — target X position
+- `y` — `Integer` — target Y position
+- `bounds` — `Rect2i` — source rectangle region

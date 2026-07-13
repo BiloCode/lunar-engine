@@ -22,7 +22,7 @@ namespace
          mrb_data_init(self, color, &r_color_type);
       }
       else {
-         mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid arguments");
+         mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
       return self;

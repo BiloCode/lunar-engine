@@ -3,7 +3,6 @@
 #include <mruby.h>
 #include <mruby/class.h>
 #include <cstring>
-#include <iostream>
 #include <Engine/core/font.h>
 #include <Engine/bindings/r_types.h>
 #include <Engine/singletons/interpreter.h>

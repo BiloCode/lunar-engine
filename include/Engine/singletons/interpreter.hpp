@@ -1,8 +1,8 @@
 #include "interpreter.h"
 
-#include <mruby.h>
-#include <mruby/string.h>
-#include <iostream>
+#include <Engine/utils/debug.h>
+
+namespace Debug = Engine::Debug;
 
 template<typename T>
 void Interpreter::bind_property(RClass* ref, const std::string& name, T* value)
@@ -17,10 +17,7 @@ mrb_value Interpreter::call(mrb_value receiver, const std::string& name, Args...
 
    if (mrb->exc)
    {
-      mrb_value exc = mrb_obj_value(mrb->exc);
-      std::cout << "[Interpreter]: " << mrb_str_to_cstr(mrb, mrb_inspect(mrb, exc)) << std::endl;
-      mrb->exc = nullptr;
-      throw std::runtime_error("[Interpreter]: #<InterpreterCallException>");
+      Debug::print_exception(mrb, "[Interpreter]: RubyCallException");
    }
 
    return result;

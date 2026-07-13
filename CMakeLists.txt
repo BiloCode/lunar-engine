@@ -24,19 +24,21 @@ add_executable(LunarEngine
    src/bindings/r_fonts.cpp
    src/bindings/r_color.cpp
    src/bindings/r_audio.cpp
+   src/bindings/r_image.cpp
    src/bindings/r_input.cpp
    src/bindings/r_kernel.cpp
+   src/bindings/r_rect_int.cpp
+   src/bindings/r_rect_float.cpp
    src/bindings/r_vector_int.cpp
    src/bindings/r_vector_float.cpp
    src/bindings/r_bitmap.cpp
    src/bindings/r_sprite.cpp
-   src/bindings/r_texture.cpp
-   src/bindings/r_textures.cpp
+   src/bindings/r_graphics.cpp
    src/core/font.cpp
    src/core/color.cpp
+   src/core/image.cpp
    src/core/bitmap.cpp
    src/core/sprite.cpp
-   src/core/texture.cpp
    src/singletons/scene.cpp
    src/singletons/project.cpp
    src/singletons/runtime.cpp
@@ -46,12 +48,13 @@ add_executable(LunarEngine
    src/singletons/environment.cpp
    src/interfaces/disposable.cpp
    src/interfaces/renderable.cpp
+   src/utils/ruby.cpp
    src/utils/path.cpp
    src/utils/string.cpp
    src/utils/boolean.cpp
    src/utils/integer.cpp
    src/resources/font_manager.cpp
-   src/resources/texture_manager.cpp
+   src/resources/image_manager.cpp
 )
 
 add_custom_command(

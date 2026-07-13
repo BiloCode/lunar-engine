@@ -1,9 +1,11 @@
 #include <Engine/utils/integer.h>
-#include <iostream>
+
+#include <Engine/utils/debug.h>
 
 int Engine::Integer::int_cast(const std::string& value, int fallback)
 {
-   try {
+   try
+   {
       size_t idx;
       int result = std::stoi(value, &idx);
       if (idx != value.size()) {
@@ -13,14 +15,15 @@ int Engine::Integer::int_cast(const std::string& value, int fallback)
    }
    catch (const std::exception& e)
    {
-      std::cerr << e.what() << std::endl;
+      Debug::print_error("Integer::int_cast: ", std::string(e.what()));
       return fallback;
    }
 }
 
 float Engine::Integer::float_cast(const std::string& value, float fallback)
 {
-   try {
+   try
+   {
       size_t idx;
       float result = std::stof(value, &idx);
       if (idx != value.size()) {
@@ -30,7 +33,7 @@ float Engine::Integer::float_cast(const std::string& value, float fallback)
    }
    catch (const std::exception& e)
    {
-      std::cerr << e.what() << std::endl;
+      Debug::print_error("Integer::float_cast: ", std::string(e.what()));
       return fallback;
    }
 }

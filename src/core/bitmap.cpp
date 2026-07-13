@@ -1,7 +1,10 @@
 #include <Engine/core/bitmap.h>
 
-#include <iostream>
+#include <Engine/core/font.h>
+#include <Engine/utils/debug.h>
 #include <Engine/singletons/runtime.h>
+
+namespace Debug = Engine::Debug;
 
 Bitmap::Bitmap() : width(1u), height(1u), texture_dirty(true), texture_invalid(true)
 {
@@ -40,8 +43,10 @@ SDL_Texture* Bitmap::get_texture()
       );
 
       if (texture == nullptr) {
-         throw std::runtime_error(SDL_GetError());
+         Debug::print_exception(SDL_GetError());
       }
+
+      SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 
       texture_invalid = false;
    }
@@ -49,7 +54,7 @@ SDL_Texture* Bitmap::get_texture()
    if (texture_dirty)
    {
       if (!SDL_UpdateTexture(texture, nullptr, surface->pixels, surface->pitch)) {
-         throw std::runtime_error(SDL_GetError());
+         Debug::print_exception(SDL_GetError());
       }
 
       texture_dirty = false;
@@ -61,13 +66,13 @@ SDL_Texture* Bitmap::get_texture()
 void Bitmap::debug()
 {
    if (is_invalid()) return;
-   draw_rect(1, 1, this->width - 2, this->height - 2, Color::Red);
+   draw_rect(0, 0, this->width, this->height, Color::Red, 2);
 }
 
 void Bitmap::clear()
 {
    if (is_invalid()) return;
-   SDL_FillSurfaceRect(surface, nullptr, SDL_MapSurfaceRGBA(surface, 0, 0, 0, 0));
+   SDL_ClearSurface(surface, 0, 0, 0, 0);
    texture_dirty = true;
 }
 
@@ -80,9 +85,9 @@ void Bitmap::resize(int width, int height)
 
    auto new_surface = SDL_CreateSurface(this->width, this->height, SDL_PIXELFORMAT_RGBA32);
 
-   if (surface == nullptr)
+   if (new_surface == nullptr)
    {
-      throw std::runtime_error(SDL_GetError());
+      Debug::print_exception(SDL_GetError());
    }
 
    SDL_DestroySurface(surface);
@@ -99,26 +104,35 @@ void Bitmap::draw_rect(int x, int y, int width, int height, const Color& color, 
 {
    if (is_invalid()) return;
 
+   thickness = std::max(1, thickness);
+   thickness = std::min(thickness, width);
+   thickness = std::min(thickness, height);
+
    auto pixel = SDL_MapSurfaceRGBA(surface, color.r, color.g, color.b, color.a);
 
    SDL_Rect top { x, y, width, thickness };
-   if (!SDL_FillSurfaceRect(surface, &top, pixel)) {
-      throw std::runtime_error(SDL_GetError());
-   }
-   
-   SDL_Rect bottom { x, y + height - thickness, width, thickness };
-   if (!SDL_FillSurfaceRect(surface, &bottom, pixel)) {
-      throw std::runtime_error(SDL_GetError());
-   }
-   
    SDL_Rect left { x, y, thickness, height };
-   if (!SDL_FillSurfaceRect(surface, &left, pixel)) {
-      throw std::runtime_error(SDL_GetError());
+   SDL_Rect right { x + width - thickness, y, thickness, height };
+   SDL_Rect bottom { x, y + height - thickness, width, thickness };
+
+   if (!SDL_FillSurfaceRect(surface, &top, pixel))
+   {
+      Debug::print_exception(SDL_GetError());
+   }
+   
+   if (!SDL_FillSurfaceRect(surface, &left, pixel))
+   {
+      Debug::print_exception(SDL_GetError());
+   }
+   
+   if (!SDL_FillSurfaceRect(surface, &right, pixel))
+   {
+      Debug::print_exception(SDL_GetError());
    }
 
-   SDL_Rect right { x + width - thickness, y, thickness, height };
-   if (!SDL_FillSurfaceRect(surface, &right, pixel)) {
-      throw std::runtime_error(SDL_GetError());
+   if (!SDL_FillSurfaceRect(surface, &bottom, pixel))
+   {
+      Debug::print_exception(SDL_GetError());
    }
 
    texture_dirty = true;
@@ -130,8 +144,9 @@ void Bitmap::draw_text(int x, int y, int width, int height, const std::string& t
 
    auto* text_surface = TTF_RenderText_Blended(font->c_sdl(), text.c_str(), text.size(), color.c_sdl());
 
-   if (text_surface == nullptr) {
-      throw std::runtime_error(SDL_GetError());
+   if (text_surface == nullptr)
+   {
+      Debug::print_exception(SDL_GetError());
    }
 
    SDL_Rect dst;
@@ -140,11 +155,44 @@ void Bitmap::draw_text(int x, int y, int width, int height, const std::string& t
    dst.w = text_surface->w;
    dst.h = text_surface->h;
 
-   if (!SDL_BlitSurface(text_surface, nullptr, surface, &dst)) {
-      throw std::runtime_error(SDL_GetError());
+   if (!SDL_BlitSurface(text_surface, nullptr, surface, &dst))
+   {
+      Debug::print_exception(SDL_GetError());
    }
 
    SDL_DestroySurface(text_surface);
+
+   texture_dirty = true;
+}
+
+void Bitmap::draw_texture(const Image& image, int x, int y)
+{
+   auto bounds = Rect<int>(0, 0, image.get_width(), image.get_height());
+   draw_texture_region(image, x, y, bounds);
+}
+
+void Bitmap::draw_texture_region(const Image& image, int x, int y, const Rect<int>& bounds)
+{
+   if (is_invalid()) return;
+
+   SDL_Surface* src = const_cast<SDL_Surface*>(image.get_source_ref());
+
+   SDL_Rect src_rect;
+   src_rect.x = bounds.x;
+   src_rect.y = bounds.y;
+   src_rect.w = bounds.width;
+   src_rect.h = bounds.height;
+
+   SDL_Rect dst_rect;
+   dst_rect.x = x;
+   dst_rect.y = y;
+   dst_rect.w = 0;
+   dst_rect.h = 0;
+
+   if (!SDL_BlitSurface(src, &src_rect, surface, &dst_rect))
+   {
+      Debug::print_exception(SDL_GetError());
+   }
 
    texture_dirty = true;
 }

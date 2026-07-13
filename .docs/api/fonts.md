@@ -6,14 +6,14 @@ Module that acts as a font factory. Manages an internal `FontManager`.
 
 | Method | Returns |
 |---|---|
-| [`get`](#get) | `Font` |
+| [`load`](#load) | `Font` |
 
 ---
 
-### get
+### load
 
 ```ruby
-Fonts.get(name)
+Fonts.load(name)
 ```
 
 Loads a font by file name.

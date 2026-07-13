@@ -1,15 +1,18 @@
 #include <Engine/singletons/runtime.h>
+
+#include <string>
+#include <Engine/utils/debug.h>
 #include <Engine/singletons/scene.h>
 #include <Engine/singletons/project.h>
 #include <Engine/singletons/renderer.h>
 #include <Engine/singletons/environment.h>
-#include <string>
-#include <iostream>
+
+namespace Debug = Engine::Debug;
 
 void Runtime::start()
 {
    if (!SDL_Init(SDL_INIT_VIDEO)) {
-      throw std::runtime_error("[Runtime]: Failed to initialize SDL: " + std::string(SDL_GetError()));
+      Debug::print_exception("[Runtime]: Failed to initialize SDL: ", SDL_GetError());
    }
 
    auto screen_w = Project::get_settings<unsigned int>("screen_w", 1280);
@@ -25,7 +28,7 @@ void Runtime::start()
    window = SDL_CreateWindow(win_title.c_str(), screen_w, screen_h, SDL_WINDOW_HIGH_PIXEL_DENSITY);
 
    if (!window) {
-      throw std::runtime_error("[Runtime]: Failed to create SDL window: " + std::string(SDL_GetError()));
+      Debug::print_exception("[Runtime]: Failed to create SDL window: ", SDL_GetError());
    }
 
    SDL_SetWindowResizable(window, win_resizable);
@@ -34,7 +37,7 @@ void Runtime::start()
    renderer = SDL_CreateRenderer(window, nullptr);
 
    if (!renderer) {
-      throw std::runtime_error("[Runtime]: Failed to create SDL renderer: " + std::string(SDL_GetError()));
+      Debug::print_exception("[Runtime]: Failed to create SDL renderer: ", SDL_GetError());
    }
 
    SDL_SetRenderVSync(renderer, vsync);

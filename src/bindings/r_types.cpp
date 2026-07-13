@@ -1,11 +1,12 @@
 #include <Engine/bindings/r_types.h>
 
+#include <Engine/core/rect.h>
 #include <Engine/core/font.h>
 #include <Engine/core/color.h>
+#include <Engine/core/image.h>
 #include <Engine/core/vector.h>
 #include <Engine/core/sprite.h>
 #include <Engine/core/bitmap.h>
-#include <Engine/core/texture.h>
 #include <Engine/bindings/r_values.h>
 
 const mrb_data_type r_font_type = {
@@ -22,10 +23,24 @@ const mrb_data_type r_color_type = {
    }
 };
 
-const mrb_data_type r_texture_type = {
+const mrb_data_type r_image_type = {
    "Texture",
    [](mrb_state*, void* ptr) {
-      delete static_cast<Texture*>(ptr);
+      delete static_cast<Image*>(ptr);
+   }
+};
+
+const mrb_data_type r_rect2i_type = {
+   "Rect2i",
+   [](mrb_state*, void* ptr) {
+      delete static_cast<Rect<int>*>(ptr);
+   }
+};
+
+const mrb_data_type r_rect2f_type = {
+   "Rect2f",
+   [](mrb_state*, void* ptr) {
+      delete static_cast<Rect<float>*>(ptr);
    }
 };
 
@@ -86,7 +101,7 @@ const mrb_data_type r_fonts_type = {
    nullptr
 };
 
-const mrb_data_type r_textures_type = {
+const mrb_data_type r_graphics_type = {
    "Graphics",
    nullptr
 };

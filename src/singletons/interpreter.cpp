@@ -1,35 +1,39 @@
 #include <Engine/singletons/interpreter.h>
-#include <Engine/utils/path.h>
+
+#include <fstream>
 #include <mruby/data.h>
 #include <mruby/class.h>
 #include <mruby/string.h>
 #include <mruby/compile.h>
 #include <mruby/variable.h>
-#include <fstream>
-#include <iostream>
+#include <Engine/utils/path.h>
+#include <Engine/utils/debug.h>
 
 namespace Path = Engine::Path;
+namespace Debug = Engine::Debug;
 
 void Interpreter::load()
 {
-   if (mrb != nullptr) {
-      std::cerr << "[Interpreter]: Ruby runtime already initialized" << std::endl;
+   if (mrb != nullptr)
+   {
+      Debug::print_error("[Interpreter]: Ruby runtime already initialized");
       return;
    }
 
    auto basepath = Path::get_executable_dir() / "scripts/load_order.txt";
 
-   if (!std::filesystem::exists(basepath)) {
-      throw std::runtime_error("[Interpreter]: Failed to load scripts/load_order.txt");
+   if (!std::filesystem::exists(basepath))
+   {
+      Debug::print_exception("[Interpreter]: Failed to load scripts/load_order.txt");
    }
 
    std::fstream file(basepath);
 
-   if (file.is_open()) {
+   if (file.is_open())
+   {
       std::string line;
 
-      while (std::getline(file, line))
-      {
+      while (std::getline(file, line)) {
          if (line.empty()) {
             continue;
          }
@@ -45,8 +49,9 @@ void Interpreter::load()
 
 void Interpreter::start()
 {
-   if (mrb_paths.empty()) {
-      std::cerr << "[Interpreter]: No scripts to load" << std::endl;
+   if (mrb_paths.empty())
+   {
+      Debug::print_error("[Interpreter]: No scripts to load");
       return;
    }
 
@@ -55,25 +60,22 @@ void Interpreter::start()
       FILE* file = fopen(path.string().c_str(), "r");
 
       if (!file) {
-         std::cerr << "[Interpreter]: Script " << path.filename() << " error" << "\n";
+         Debug::print_error("[Interpreter]: Script ", path.filename(), " error");
          continue;
       }
 
       mrb_load_file(mrb, file);
 
-      if (mrb->exc)
-      {
-         mrb_value exc = mrb_obj_value(mrb->exc);
-         std::cout << "[Interpreter]: " << mrb_str_to_cstr(mrb, mrb_inspect(mrb, exc)) << std::endl;
-         mrb->exc = nullptr;
-         throw std::runtime_error("[Interpreter]: #<InterpreterLoadFileException>");
+      if (mrb->exc) {
+         Debug::print_exception(mrb, "[Interpreter]: LoadFileException");
       }
    }
 }
 
 void Interpreter::finish()
 {
-   if (mrb != nullptr) {
+   if (mrb != nullptr)
+   {
       mrb_close(mrb);
    }
 }
