@@ -1,1 +1,1 @@
-# Input (stub)
+# Input

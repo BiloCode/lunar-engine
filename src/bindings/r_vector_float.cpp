@@ -13,24 +13,22 @@ namespace
 {
    mrb_value vector_initialize(mrb_state* mrb, mrb_value self)
    {
-      mrb_int arg_count = mrb_get_argc(mrb);
+      mrb_int args_c = mrb_get_argc(mrb);
 
-      if (arg_count == 0)
-      {
+      if (args_c == 0) {
          auto vector = new Vector<float>();
          mrb_data_init(self, vector, &r_vector2f_type);
       }
-      else if (arg_count == 1)
-      {
-         mrb_value value;
-         mrb_get_args(mrb, "o", &value);
-         if (DATA_TYPE(value) == &r_vector2f_type) {
-            auto v_vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, value, &r_vector2f_type));
+      else if (args_c == 1) {
+         mrb_value obj;
+         mrb_get_args(mrb, "o", &obj);
+         if (DATA_TYPE(obj) == &r_vector2f_type) {
+            auto v_vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, obj, &r_vector2f_type));
             auto n_vector = new Vector<float>(*v_vector);
             mrb_data_init(self, n_vector, &r_vector2f_type);
          }
-         else if (DATA_TYPE(value) == &r_vector2i_type) {
-            auto v_vector = static_cast<Vector<int>*>(mrb_data_get_ptr(mrb, value, &r_vector2i_type));
+         else if (DATA_TYPE(obj) == &r_vector2i_type) {
+            auto v_vector = static_cast<Vector<int>*>(mrb_data_get_ptr(mrb, obj, &r_vector2i_type));
             auto n_vector = new Vector<float>(*v_vector);
             mrb_data_init(self, n_vector, &r_vector2f_type);
          }
@@ -38,15 +36,13 @@ namespace
             mrb_raise(mrb, E_ARGUMENT_ERROR, "Unsupported type");
          }
       }
-      else if (arg_count == 2)
-      {
+      else if (args_c == 2) {
          mrb_float x, y;
          mrb_get_args(mrb, "ff", &x, &y);
          auto vector = new Vector<float>(x, y);
          mrb_data_init(self, vector, &r_vector2f_type);
       }
-      else
-      {
+      else {
          mrb_raise(mrb, E_ARGUMENT_ERROR, "Invalid arguments");
       }
 
@@ -56,7 +52,7 @@ namespace
    mrb_value vector_x(mrb_state* mrb, mrb_value self)
    {
       auto vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, self, &r_vector2f_type));
-      return mrb_float_value(mrb, vector->get_x());
+      return mrb_float_value(mrb, vector->x);
    }
 
    mrb_value vector_x_set(mrb_state* mrb, mrb_value self)
@@ -64,14 +60,14 @@ namespace
       mrb_float x;
       mrb_get_args(mrb, "f", &x);
       auto vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, self, &r_vector2f_type));
-      vector->set_x(x);
+      vector->x = x;
       return mrb_nil_value();
    }
 
    mrb_value vector_y(mrb_state* mrb, mrb_value self)
    {
       auto vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, self, &r_vector2f_type));
-      return mrb_float_value(mrb, vector->get_y());
+      return mrb_float_value(mrb, vector->y);
    }
 
    mrb_value vector_y_set(mrb_state* mrb, mrb_value self)
@@ -79,16 +75,16 @@ namespace
       mrb_float y;
       mrb_get_args(mrb, "f", &y);
       auto vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, self, &r_vector2f_type));
-      vector->set_y(y);
+      vector->y = y;
       return mrb_nil_value();
    }
 
-   mrb_value vector_inspect(mrb_state* mrb, mrb_value self)
+   mrb_value vector_to_string(mrb_state* mrb, mrb_value self)
    {
       auto vector = static_cast<Vector<float>*>(mrb_data_get_ptr(mrb, self, &r_vector2f_type));
-      auto output = String::format_object({
-         { "x", std::to_string(vector->get_x()) },
-         { "y", std::to_string(vector->get_y()) }
+      auto output = String::format_object("#<Vector2f>", {
+         { "x", std::to_string(vector->x) },
+         { "y", std::to_string(vector->y) }
       });
       return mrb_str_new_cstr(mrb, output.c_str());
    }
@@ -103,6 +99,5 @@ void ruby::bind_vector_float()
    Interpreter::bind_instance_method(ref, "x=", vector_x_set, MRB_ARGS_REQ(1));
    Interpreter::bind_instance_method(ref, "y", vector_y, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "y=", vector_y_set, MRB_ARGS_REQ(1));
-   Interpreter::bind_instance_method(ref, "to_s", vector_inspect, MRB_ARGS_NONE());
-   Interpreter::bind_instance_method(ref, "inspect", vector_inspect, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "to_s", vector_to_string, MRB_ARGS_NONE());
 }

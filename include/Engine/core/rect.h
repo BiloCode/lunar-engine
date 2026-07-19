@@ -12,7 +12,7 @@ class Rect
    );
 
 public:
-   Rect() = default;
+   Rect();
    Rect(T x, T y, T width, T height);
    T x;
    T y;

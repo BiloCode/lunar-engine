@@ -44,5 +44,12 @@ sprite.y = 200
 # Position vectors
 pos = Vector2f.new(150, 75)
 size = Vector2i.new(32, 32)
+
+# Rectangles for layout and texture regions
+rect = Rect2f.new(50, 50, 200, 100)
+area = Rect2i.new(x: 0, y: 0, width: 64, height: 64)
+
+# Draw a texture region using a rect
+bitmap.draw_texture_region(image, 0, 0, area)
 ```
 

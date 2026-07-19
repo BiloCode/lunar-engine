@@ -13,15 +13,14 @@ namespace
 {
    mrb_value bitmap_initialize(mrb_state* mrb, mrb_value self)
    {
-      mrb_int arg_count = mrb_get_argc(mrb);
+      mrb_int width, height;
+      mrb_int args_c = mrb_get_args(mrb, "|ii", &width, &height);
 
-      if (arg_count == 0) {
+      if (args_c == 0) {
          auto* bitmap = new Bitmap();
          mrb_data_init(self, bitmap, &r_bitmap_type);
       }
-      else if (arg_count == 2) {
-         mrb_int width, height;
-         mrb_get_args(mrb, "ii", &width, &height);
+      else if (args_c == 2) {
          auto* bitmap = new Bitmap(width, height);
          mrb_data_init(self, bitmap, &r_bitmap_type);
       }

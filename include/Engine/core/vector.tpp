@@ -1,6 +1,11 @@
 #include "vector.h"
 
 template<typename T>
+Vector<T>::Vector() : x(0), y(0)
+{
+}
+
+template<typename T>
 Vector<T>::Vector(T x, T y) : x(x), y(y)
 {
 }
@@ -15,30 +20,6 @@ Vector<T>::Vector(const Vector<U>& vector)
       "Vector<U>: U must be int or float."
    );
 
-   x = static_cast<T>(vector.get_x());
-   y = static_cast<T>(vector.get_y());
-}
-
-template <typename T>
-T Vector<T>::get_x() const
-{
-   return x;
-}
-
-template <typename T>
-T Vector<T>::get_y() const
-{
-   return y;
-}
-
-template <typename T>
-void Vector<T>::set_x(T value)
-{
-   x = value;
-}
-
-template <typename T>
-void Vector<T>::set_y(T value)
-{
-   y = value;
+   x = static_cast<T>(vector.x);
+   y = static_cast<T>(vector.y);
 }

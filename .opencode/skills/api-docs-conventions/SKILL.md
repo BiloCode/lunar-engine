@@ -75,5 +75,5 @@ Then below `---` separator, details for each method:
 4. **Code examples**: no comments allowed (`# =>`, `# copy from...`, etc.). Just the call.
 5. **Parameter list**: one parameter per line with `- \`name\` — \`Type\` — description`. Never comma-separated on one line.
 6. **Placeholders** (no implementation): only class name and type (`Audio`, `Graphics (Module)`, `Input`).
-7. **Labels in titles**: `(Module)` with capital M, `(stub)` lowercase.
+7. **Debug methods**: `to_s` and `inspect` are debugging helpers — omit them from docs. Only document methods that are part of the public API.
 8. **Home page** (`README.md`): architecture diagram centered with `<div align="center">`, "Examples" section with Ruby snippets.

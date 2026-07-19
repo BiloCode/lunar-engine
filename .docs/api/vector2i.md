@@ -20,28 +20,3 @@ Vector2i.new(vector)
 |---|---|---|
 | `x` / `x=` | `Integer` | read-write |
 | `y` / `y=` | `Integer` | read-write |
-
-## Methods
-
-| Method | Returns |
-|---|---|
-| [`to_s`](#to_s) | `String` |
-| [`inspect`](#inspect) | `String` |
-
----
-
-### to_s
-
-```ruby
-vec.to_s
-```
-
-Returns a string representation of the vector.
-
-### inspect
-
-```ruby
-vec.inspect
-```
-
-Returns a debug-friendly string representation.

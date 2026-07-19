@@ -30,10 +30,10 @@ namespace
       return mrb_int_value(mrb, image->get_height());
    }
 
-   mrb_value image_inspect(mrb_state* mrb, mrb_value self)
+   mrb_value image_to_string(mrb_state* mrb, mrb_value self)
    {
       auto image = static_cast<Image*>(mrb_data_get_ptr(mrb, self, &r_image_type));
-      auto output = String::format_object({
+      auto output = String::format_object("#<Image>", {
          { "width", std::to_string(image->get_width()) },
          { "height", std::to_string(image->get_height()) }
       });
@@ -48,6 +48,5 @@ void ruby::bind_image()
    Interpreter::bind_singleton_method(ref, "new", image_new, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "width", image_width, MRB_ARGS_NONE());
    Interpreter::bind_instance_method(ref, "height", image_height, MRB_ARGS_NONE());
-   Interpreter::bind_instance_method(ref, "to_s", image_inspect, MRB_ARGS_NONE());
-   Interpreter::bind_instance_method(ref, "inspect", image_inspect, MRB_ARGS_NONE());
+   Interpreter::bind_instance_method(ref, "to_s", image_to_string, MRB_ARGS_NONE());
 }
